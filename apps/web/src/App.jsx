@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { animeList, getAnimeById } from "./data/anime";
 import { loadJSON, saveJSON } from "./utils/storage";
-
-// Sementara: kelas CSS lama untuk latar poster. Akan dirapikan saat tahap CSS.
-const posterClasses = { 1: "poster-one", 2: "poster-two", 3: "poster-three" };
+import AnimeCard from "./components/AnimeCard";
 
 function App() {
   const [search, setSearch] = useState("");
@@ -193,33 +191,13 @@ function App() {
 
               <div className="anime-grid">
                 {visibleAnime.map((anime) => (
-                  <article
+                  <AnimeCard
                     key={anime.id}
-                    className="anime-card"
-                    onClick={() => setSelectedAnime(anime.id)}
-                  >
-                    <div className={`anime-poster ${posterClasses[anime.id] || ""}`}>
-                      <img src={anime.poster} alt={anime.title} />
-                    </div>
-                    <div className="anime-info">
-                      <span className="anime-category">{anime.categoryLabel}</span>
-                      <span className="anime-rating">⭐ {anime.rating}</span>
-                    </div>
-
-                    <button
-                      className="favorite-button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleFavorite(anime.id);
-                      }}
-                      aria-label="Tambah atau hapus favorit"
-                    >
-                      {favorites.includes(anime.id) ? "❤️" : "🤍"}
-                    </button>
-                    <h3>{anime.title}</h3>
-                    <p>{anime.genre}</p>
-                    <span className="anime-year">{anime.year}</span>
-                  </article>
+                    anime={anime}
+                    isFavorite={favorites.includes(anime.id)}
+                    onSelect={setSelectedAnime}
+                    onToggleFavorite={toggleFavorite}
+                  />
                 ))}
               </div>
 
