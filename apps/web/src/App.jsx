@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { animeList, getAnimeById } from "./data/anime";
+import { getAnimeById } from "./data/anime";
 import { loadJSON, saveJSON } from "./utils/storage";
 import AnimeCard from "./components/AnimeCard";
+import { useAnimeCatalog } from "./hooks/useAnimeCatalog";
 
 function App() {
   const [search, setSearch] = useState("");
+  const { items, loading, error } = useAnimeCatalog(search);
   const [showSearch, setShowSearch] = useState(false);
   const [activePage, setActivePage] = useState("home");
   const [selectedAnime, setSelectedAnime] = useState(null);
@@ -29,32 +31,28 @@ function App() {
   };
 
   // Anime yang sedang dipilih (undefined jika belum ada yang dipilih)
-  const selectedAnimeData = getAnimeById(selectedAnime);
+  const findAnime = (id) =>
+    items.find((anime) => anime.id === id) || getAnimeById(id);
+  const selectedAnimeData = findAnime(selectedAnime);
 
-  const visibleAnime = animeList.filter((anime) => {
-    const query = search.trim().toLowerCase();
-
-    const matchesSearch = `${anime.title} ${anime.genre}`
-      .toLowerCase()
-      .includes(query);
-
+  const visibleAnime = items.filter((anime) => {
     const matchesPage =
       activePage === "home" ||
       (activePage === "anime" && anime.category === "anime") ||
       (activePage === "donghua" && anime.category === "donghua") ||
       (activePage === "favorites" && favorites.includes(anime.id));
 
-    return matchesSearch && matchesPage;
+    return matchesPage;
   });
 
   // Catat anime + episode ke riwayat. Dipanggil langsung saat pengguna beraksi.
   const recordHistory = (animeId, episode) => {
-    const anime = getAnimeById(animeId);
+    const anime = findAnime(animeId);
     if (!anime) return;
 
     setWatchHistory((previous) => {
       const updated = [
-        { animeId, episode, title: anime.title },
+        { animeId, episode, title: anime.title, poster: anime.poster },
         ...previous.filter((item) => item.animeId !== animeId)
       ];
       saveJSON("nekonime-history", updated);
@@ -150,7 +148,7 @@ function App() {
                           onClick={() => watchEpisode(item.animeId, item.episode)}
                         >
                           <img
-                            src={`/images/anime/anime-${item.animeId}.jpeg`}
+                            src={item.poster || `/images/anime/anime-${item.animeId}.jpeg`}
                             alt={item.title}
                           />
                           <span>
@@ -188,6 +186,9 @@ function App() {
                       ? "Jelajahi koleksi animasi dari Tiongkok."
                       : "Koleksi cerita menarik menantimu."}
               </p>
+
+              {loading && <p role="status">Memuat anime...</p>}
+              {error && !loading && <p role="status">{error}</p>}
 
               <div className="anime-grid">
                 {visibleAnime.map((anime) => (
