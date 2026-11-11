@@ -8,6 +8,9 @@ const TIMEOUT_MS = 8000;
 
 const cache = new Map();
 
+// Label tampilan untuk format AniList. Format lain tampil apa adanya.
+const FORMAT_LABELS = { TV: "ANIME", TV_SHORT: "ANIME", MOVIE: "FILM" };
+
 const MEDIA_FIELDS = `
   id
   title { romaji english }
@@ -29,7 +32,7 @@ function normalize(item) {
     id: item.id,
     title: item.title.english || item.title.romaji,
     category: isDonghua ? "donghua" : "anime",
-    categoryLabel: isDonghua ? "DONGHUA" : (item.format || "ANIME").replace("_", " "),
+    categoryLabel: isDonghua ? "DONGHUA" : (FORMAT_LABELS[item.format] || (item.format || "ANIME").replace("_", " ")),
     rating: item.averageScore ? (item.averageScore / 10).toFixed(1) : "-",
     year: item.seasonYear ? String(item.seasonYear) : "-",
     genre: item.genres?.length ? item.genres.join(" · ") : "-",
