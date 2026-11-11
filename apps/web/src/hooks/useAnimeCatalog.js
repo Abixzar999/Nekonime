@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getTopAnime, searchAnime } from "../services/jikan";
+import { getTopAnime, searchAnime } from "../services/animeApi";
 import { animeList as localAnime } from "../data/anime";
 
 const DEBOUNCE_MS = 500;
