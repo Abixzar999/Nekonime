@@ -16,7 +16,33 @@ export const videoSources = {
   "21459:10": { type: "youtube", id: "WrPpgh3S2is", credit: "Ani-One Indonesia (kanal resmi)" },
   "21459:11": { type: "youtube", id: "hjykLSHg0D0", credit: "Ani-One Indonesia (kanal resmi)" },
   "21459:12": { type: "youtube", id: "N3jKOTu_pGc", credit: "Ani-One Indonesia (kanal resmi)" },
-  "21459:13": { type: "youtube", id: "Oty53UfzE38", credit: "Ani-One Indonesia (kanal resmi)" }
+  "21459:13": { type: "youtube", id: "Oty53UfzE38", credit: "Ani-One Indonesia (kanal resmi)" },
+  // My Hero Academia Season 2 (AniList 21856), kanal resmi Ani-One Indonesia
+  "21856:1": { type: "youtube", id: "p6vcYCZklkY", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:2": { type: "youtube", id: "8iJsRgNbTa8", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:3": { type: "youtube", id: "t0s6NI57DbA", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:4": { type: "youtube", id: "rc7UG5DdgYo", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:5": { type: "youtube", id: "NsbLkPcnyQw", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:6": { type: "youtube", id: "aeln7CIOaFc", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:7": { type: "youtube", id: "A-t4fJ1crBQ", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:8": { type: "youtube", id: "omIYioMPyus", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:9": { type: "youtube", id: "h4cCd-6mmG4", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:10": { type: "youtube", id: "VUaG3fW_N18", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:11": { type: "youtube", id: "VUDb3M-CDzE", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:12": { type: "youtube", id: "R6cYWgriylg", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:13": { type: "youtube", id: "GP11GVisudc", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:14": { type: "youtube", id: "2XPP5YOS7x0", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:15": { type: "youtube", id: "zgzB6cklKGA", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:16": { type: "youtube", id: "qQMIyUmWE3U", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:17": { type: "youtube", id: "p9WvjcrfZ9I", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:18": { type: "youtube", id: "jTJq2vLq2N0", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:19": { type: "youtube", id: "G0bn6zulltU", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:20": { type: "youtube", id: "eyJFGL_1SdM", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:21": { type: "youtube", id: "rYwkngmQe9A", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:22": { type: "youtube", id: "CoxFeEKpO-A", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:23": { type: "youtube", id: "eUTaj3l7MNI", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:24": { type: "youtube", id: "2TKxgRk4siE", credit: "Ani-One Indonesia (kanal resmi)" },
+  "21856:25": { type: "youtube", id: "3yfCOc9ebdg", credit: "Ani-One Indonesia (kanal resmi)" }
 };
 
 // Mengembalikan sumber video, atau null jika belum ada.
