@@ -880,3 +880,22 @@ body {
   outline: 2px solid #ff812f;
   outline-offset: 4px;
 }
+
+/* ===== Token desain NEKONIME (Liquid Glass) ===== */
+:root {
+  --bg: #080a12;
+  --accent: #ff812f;
+  --accent-rgb: 255, 129, 47;
+  --accent-hover: #e96b1c;
+  --text: #ffffff;
+  --text-muted: #a5a8b5;
+
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-blur: blur(14px);
+  --glass-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+}
