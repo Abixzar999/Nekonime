@@ -13,6 +13,8 @@ const normalizeFavorites = (saved) =>
 import { loadJSON, saveJSON } from "./utils/storage";
 import AnimeCard from "./components/AnimeCard";
 import CatalogNotice from "./components/CatalogNotice";
+import VideoPlayer from "./components/VideoPlayer";
+import { getVideoSource } from "./data/episodes";
 import "./components/EmptyState.css";
 import "./components/EmptyState.css";
 import { useAnimeCatalog } from "./hooks/useAnimeCatalog";
@@ -276,13 +278,7 @@ function App() {
             </button>
           </div>
 
-          <div className="video-player">
-            <div className="video-placeholder">
-              <span>▶</span>
-              <p>Pemutar video NEKONIME</p>
-              <small>Video belum tersedia</small>
-            </div>
-          </div>
+          <VideoPlayer source={getVideoSource(selectedAnimeData.id, selectedEpisode)} />
 
           <div className="episode-list">
             <h3>Daftar Episode</h3>

@@ -1,0 +1,15 @@
+.video-player video,
+.video-player iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: inherit;
+  background: #000;
+}
+
+.video-credit {
+  margin: 10px 4px 0;
+  font-size: 0.85rem;
+  color: #a5a8b5;
+}
