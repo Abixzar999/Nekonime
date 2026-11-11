@@ -12,6 +12,7 @@ const normalizeFavorites = (saved) =>
     .filter(Boolean);
 import { loadJSON, saveJSON } from "./utils/storage";
 import AnimeCard from "./components/AnimeCard";
+import CatalogNotice from "./components/CatalogNotice";
 import { useAnimeCatalog } from "./hooks/useAnimeCatalog";
 
 function App() {
@@ -200,8 +201,8 @@ function App() {
                       : "Koleksi cerita menarik menantimu."}
               </p>
 
-              {loading && <p role="status">Memuat anime...</p>}
-              {error && !loading && <p role="status">{error}</p>}
+              <CatalogNotice loading={loading} error={error} />
+              
 
               <div className="anime-grid">
                 {visibleAnime.map((anime) => (
