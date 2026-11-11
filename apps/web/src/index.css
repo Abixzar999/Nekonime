@@ -899,3 +899,74 @@ body {
   --radius-md: 14px;
   --radius-lg: 20px;
 }
+
+/* ===== 9c: Perapihan tata letak dan kilau kaca ===== */
+
+/* Riwayat sejajar dengan navbar, hero, dan katalog */
+.watch-history {
+  width: 90%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 45px 0;
+}
+
+/* Kilau tepi atas ala kaca cair */
+.navbar {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+  border-color: var(--glass-border, rgba(255, 255, 255, 0.14));
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    var(--glass-shadow, 0 8px 28px rgba(0, 0, 0, 0.35));
+}
+
+.hero {
+  border-color: var(--glass-border, rgba(255, 255, 255, 0.14));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    var(--glass-shadow, 0 8px 28px rgba(0, 0, 0, 0.35));
+}
+
+/* Hero lebih pendek di layar lebar saja, agar katalog lebih cepat terlihat */
+@media (min-width: 769px) {
+  .hero {
+    min-height: 440px;
+    padding: 56px 70px;
+  }
+}
+
+/* ===== 9d: Riwayat satu baris yang bisa digeser ===== */
+.history-list {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding-bottom: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 129, 47, 0.6) transparent;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent);
+}
+
+.history-item {
+  flex: 0 0 260px;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.history-list::-webkit-scrollbar {
+  height: 6px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 129, 47, 0.6);
+  border-radius: 999px;
+}
+
+@media (max-width: 500px) {
+  .history-item {
+    flex-basis: 220px;
+  }
+}

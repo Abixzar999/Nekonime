@@ -71,7 +71,7 @@ function App() {
     setWatchHistory((previous) => {
       const updated = [
         { animeId, episode, title: anime.title, poster: anime.poster },
-        ...previous.filter((item) => item.animeId !== animeId)
+        ...previous.filter((item) => item.animeId !== animeId).slice(0, 19)
       ];
       saveJSON("nekonime-history", updated);
       return updated;
