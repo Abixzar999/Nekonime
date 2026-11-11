@@ -1,5 +1,15 @@
 import { useState } from "react";
 import { getAnimeById } from "./data/anime";
+
+// Mengubah data favorit lama (angka ID) menjadi objek ringkas.
+const normalizeFavorites = (saved) =>
+  saved
+    .map((entry) => {
+      if (typeof entry === "object" && entry !== null) return entry;
+      const anime = getAnimeById(entry);
+      return anime ? { ...anime } : null;
+    })
+    .filter(Boolean);
 import { loadJSON, saveJSON } from "./utils/storage";
 import AnimeCard from "./components/AnimeCard";
 import { useAnimeCatalog } from "./hooks/useAnimeCatalog";
@@ -13,17 +23,22 @@ function App() {
   const [isWatching, setIsWatching] = useState(false);
   const [selectedEpisode, setSelectedEpisode] = useState(1);
   const [favorites, setFavorites] = useState(() =>
-    loadJSON("nekonime-favorites", [])
+    normalizeFavorites(loadJSON("nekonime-favorites", []))
   );
   const [watchHistory, setWatchHistory] = useState(() =>
     loadJSON("nekonime-history", [])
   );
 
+  const isFavorite = (animeId) =>
+    favorites.some((item) => item.id === animeId);
+
   const toggleFavorite = (animeId) => {
+    const anime = findAnime(animeId);
+    if (!anime) return;
     setFavorites((previous) => {
-      const updated = previous.includes(animeId)
-        ? previous.filter((id) => id !== animeId)
-        : [...previous, animeId];
+      const updated = previous.some((item) => item.id === animeId)
+        ? previous.filter((item) => item.id !== animeId)
+        : [...previous, anime];
 
       saveJSON("nekonime-favorites", updated);
       return updated;
@@ -35,12 +50,12 @@ function App() {
     items.find((anime) => anime.id === id) || getAnimeById(id);
   const selectedAnimeData = findAnime(selectedAnime);
 
-  const visibleAnime = items.filter((anime) => {
+  const visibleAnime = (activePage === "favorites" ? favorites : items).filter((anime) => {
     const matchesPage =
       activePage === "home" ||
       (activePage === "anime" && anime.category === "anime") ||
       (activePage === "donghua" && anime.category === "donghua") ||
-      (activePage === "favorites" && favorites.includes(anime.id));
+      activePage === "favorites";
 
     return matchesPage;
   });
@@ -195,7 +210,7 @@ function App() {
                   <AnimeCard
                     key={anime.id}
                     anime={anime}
-                    isFavorite={favorites.includes(anime.id)}
+                    isFavorite={isFavorite(anime.id)}
                     onSelect={setSelectedAnime}
                     onToggleFavorite={toggleFavorite}
                   />
