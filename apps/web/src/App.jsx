@@ -32,12 +32,10 @@ function App() {
   const isFavorite = (animeId) =>
     favorites.some((item) => item.id === animeId);
 
-  const toggleFavorite = (animeId) => {
-    const anime = findAnime(animeId);
-    if (!anime) return;
+  const toggleFavorite = (anime) => {
     setFavorites((previous) => {
-      const updated = previous.some((item) => item.id === animeId)
-        ? previous.filter((item) => item.id !== animeId)
+      const updated = previous.some((item) => item.id === anime.id)
+        ? previous.filter((item) => item.id !== anime.id)
         : [...previous, anime];
 
       saveJSON("nekonime-favorites", updated);
@@ -212,7 +210,7 @@ function App() {
                     anime={anime}
                     isFavorite={isFavorite(anime.id)}
                     onSelect={setSelectedAnime}
-                    onToggleFavorite={toggleFavorite}
+                    onToggleFavorite={() => toggleFavorite(anime)}
                   />
                 ))}
               </div>
