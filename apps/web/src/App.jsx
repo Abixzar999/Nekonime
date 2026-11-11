@@ -87,6 +87,15 @@ function App() {
     recordHistory(animeId, episode);
   };
 
+  // Hapus satu anime dari riwayat
+  const removeHistoryItem = (animeId) => {
+    setWatchHistory((previous) => {
+      const updated = previous.filter((item) => item.animeId !== animeId);
+      saveJSON("nekonime-history", updated);
+      return updated;
+    });
+  };
+
   // Hapus semua riwayat tontonan
   const clearHistory = () => {
     setWatchHistory([]);
@@ -161,7 +170,7 @@ function App() {
                 </section>
 
                 {watchHistory.length > 0 && (
-                  <HistoryRow history={watchHistory} onWatch={watchEpisode} onClear={clearHistory} />
+                  <HistoryRow history={watchHistory} onWatch={watchEpisode} onRemove={removeHistoryItem} onClear={clearHistory} />
                 )}
               </>
             )}

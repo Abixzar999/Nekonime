@@ -1024,3 +1024,49 @@ body {
   outline: 2px solid var(--accent, #ff812f);
   outline-offset: 3px;
 }
+
+/* ===== 9f: Hapus satu item riwayat ===== */
+.history-entry {
+  position: relative;
+  flex: 0 0 260px;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.history-entry .history-item {
+  width: 100%;
+}
+
+.history-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  color: var(--text-muted, #a5a8b5);
+  background: rgba(8, 10, 18, 0.75);
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.14));
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.history-remove:hover {
+  color: var(--accent, #ff812f);
+  border-color: var(--accent, #ff812f);
+}
+
+.history-remove:focus-visible {
+  outline: 2px solid var(--accent, #ff812f);
+  outline-offset: 2px;
+}
+
+@media (max-width: 500px) {
+  .history-entry {
+    flex-basis: 220px;
+  }
+}
