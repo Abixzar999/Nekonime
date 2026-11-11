@@ -13,6 +13,8 @@ const normalizeFavorites = (saved) =>
 import { loadJSON, saveJSON } from "./utils/storage";
 import AnimeCard from "./components/AnimeCard";
 import CatalogNotice from "./components/CatalogNotice";
+import "./components/EmptyState.css";
+import "./components/EmptyState.css";
 import { useAnimeCatalog } from "./hooks/useAnimeCatalog";
 
 function App() {

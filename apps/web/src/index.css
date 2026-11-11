@@ -862,3 +862,21 @@ body {
     transform: none;
   }
 }
+
+/* ===== Fokus keyboard (aksesibilitas) ===== */
+.nav-links a:focus-visible,
+.search-button:focus-visible,
+.search-input:focus-visible,
+.anime-card:focus-visible {
+  outline: 2px solid #ff812f;
+  outline-offset: 4px;
+}
+
+/* ===== Fokus keyboard (aksesibilitas) ===== */
+.nav-links a:focus-visible,
+.search-button:focus-visible,
+.search-input:focus-visible,
+.anime-card:focus-visible {
+  outline: 2px solid #ff812f;
+  outline-offset: 4px;
+}
