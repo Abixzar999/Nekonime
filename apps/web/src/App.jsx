@@ -14,6 +14,7 @@ import { loadJSON, saveJSON } from "./utils/storage";
 import AnimeCard from "./components/AnimeCard";
 import CatalogNotice from "./components/CatalogNotice";
 import VideoPlayer from "./components/VideoPlayer";
+import HistoryRow from "./components/HistoryRow";
 import { getVideoSource } from "./data/episodes";
 import "./components/EmptyState.css";
 import "./components/EmptyState.css";
@@ -86,6 +87,12 @@ function App() {
     recordHistory(animeId, episode);
   };
 
+  // Hapus semua riwayat tontonan
+  const clearHistory = () => {
+    setWatchHistory([]);
+    saveJSON("nekonime-history", []);
+  };
+
   // Ganti episode saat sedang menonton
   const changeEpisode = (episode) => {
     setSelectedEpisode(episode);
@@ -154,30 +161,7 @@ function App() {
                 </section>
 
                 {watchHistory.length > 0 && (
-                  <section className="watch-history">
-                    <p className="eyebrow">YOUR HISTORY</p>
-                    <h2>Lanjutkan Menonton</h2>
-
-                    <div className="history-list">
-                      {watchHistory.map((item) => (
-                        <button
-                          className="history-item"
-                          key={item.animeId}
-                          onClick={() => watchEpisode(item.animeId, item.episode)}
-                        >
-                          <img
-                            src={item.poster || `/images/anime/anime-${item.animeId}.jpeg`}
-                            alt={item.title}
-                          />
-                          <span>
-                            <strong>{item.title}</strong>
-                            <small>Episode {item.episode}</small>
-                          </span>
-                          <span>▶</span>
-                        </button>
-                      ))}
-                    </div>
-                  </section>
+                  <HistoryRow history={watchHistory} onWatch={watchEpisode} onClear={clearHistory} />
                 )}
               </>
             )}
