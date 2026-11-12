@@ -1096,3 +1096,117 @@ body {
   margin-left: max(0px, calc((100% - 1000px) / 2));
   margin-right: auto;
 }
+
+/* ===== 10a: Halaman detail anime ===== */
+.anime-detail .detail-content {
+  align-items: flex-start;
+}
+
+.anime-detail .detail-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.anime-detail .detail-info h2 {
+  margin: 0;
+}
+
+.anime-detail .season-picker {
+  margin: 0;
+}
+
+.anime-detail .season-picker .season-btn {
+  margin: 0;
+}
+
+.detail-facts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  max-width: 720px;
+}
+
+.detail-chips,
+.detail-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.anime-detail .detail-chip {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  color: #f3f4f8;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+}
+
+.anime-detail .detail-genre {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  color: #ff812f;
+  background: rgba(255, 129, 47, 0.1);
+  border: 1px solid rgba(255, 129, 47, 0.4);
+  border-radius: 8px;
+}
+
+.anime-detail .detail-synopsis {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #c9ccd8;
+}
+
+.anime-detail .detail-synopsis.is-clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.anime-detail .detail-info .detail-more {
+  margin: -6px 0 0;
+  padding: 0;
+  font-size: 0.9rem;
+  color: #ff812f;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.anime-detail .detail-info .detail-more:hover {
+  background: none;
+  text-decoration: underline;
+}
+
+/* Tombol Tonton lebih dulu, lalu Simpan */
+.anime-detail .detail-info .watch-now-button {
+  order: 6;
+}
+
+.anime-detail .detail-info .detail-fav {
+  order: 7;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  color: #f3f4f8;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.anime-detail .detail-info .detail-fav:hover {
+  border-color: #ff812f;
+  color: #fff;
+}
+
+.anime-detail .detail-more:focus-visible,
+.anime-detail .detail-fav:focus-visible {
+  outline: 2px solid #ff812f;
+  outline-offset: 3px;
+}

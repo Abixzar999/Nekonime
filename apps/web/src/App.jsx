@@ -16,6 +16,7 @@ import CatalogNotice from "./components/CatalogNotice";
 import VideoPlayer from "./components/VideoPlayer";
 import HistoryRow from "./components/HistoryRow";
 import SeasonPicker from "./components/SeasonPicker";
+import AnimeFacts from "./components/AnimeFacts";
 import { useSeasonAnime } from "./hooks/useSeasonAnime";
 import { getSeries } from "./data/series";
 import { getVideoSource } from "./data/episodes";
@@ -327,10 +328,20 @@ function App() {
             isAvailable={(id) => Boolean(findAnime(id))}
             onSelect={changeSeason}
           />
-              <p>⭐ {selectedAnimeData.rating}</p>
-              <p>{selectedAnimeData.year}</p>
-              <p>{selectedAnimeData.genre}</p>
-              <p>{selectedAnimeData.synopsis}</p>
+              <AnimeFacts key={selectedAnimeData.id} anime={selectedAnimeData} />
+              <button
+                type="button"
+                className="detail-fav"
+                aria-pressed={isFavorite(selectedAnimeData.id)}
+                onClick={() => toggleFavorite(selectedAnimeData)}
+              >
+                {isFavorite(selectedAnimeData.id)
+                  ? "❤️ Tersimpan di Daftar Saya"
+                  : "🤍 Simpan ke Daftar Saya"}
+              </button>
+              
+              
+              
               <button
                 className="watch-now-button"
                 onClick={() => watchEpisode(selectedAnime, selectedEpisode)}
