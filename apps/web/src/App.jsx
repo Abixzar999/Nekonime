@@ -15,6 +15,9 @@ import AnimeCard from "./components/AnimeCard";
 import CatalogNotice from "./components/CatalogNotice";
 import VideoPlayer from "./components/VideoPlayer";
 import HistoryRow from "./components/HistoryRow";
+import SeasonPicker from "./components/SeasonPicker";
+import { useSeasonAnime } from "./hooks/useSeasonAnime";
+import { getSeries } from "./data/series";
 import { getVideoSource } from "./data/episodes";
 import "./components/EmptyState.css";
 import "./components/EmptyState.css";
@@ -28,6 +31,7 @@ function App() {
   const [selectedAnime, setSelectedAnime] = useState(null);
   const [isWatching, setIsWatching] = useState(false);
   const [selectedEpisode, setSelectedEpisode] = useState(1);
+  const seasonAnime = useSeasonAnime(selectedAnime);
   const [favorites, setFavorites] = useState(() =>
     normalizeFavorites(loadJSON("nekonime-favorites", []))
   );
@@ -51,7 +55,9 @@ function App() {
 
   // Anime yang sedang dipilih (undefined jika belum ada yang dipilih)
   const findAnime = (id) =>
-    items.find((anime) => anime.id === id) || getAnimeById(id);
+    items.find((anime) => anime.id === id) ||
+    seasonAnime.find((anime) => anime.id === id) ||
+    getAnimeById(id);
   const selectedAnimeData = findAnime(selectedAnime);
 
   const visibleAnime = (activePage === "favorites" ? favorites : items).filter((anime) => {
@@ -85,6 +91,12 @@ function App() {
     setSelectedEpisode(episode);
     setIsWatching(true);
     recordHistory(animeId, episode);
+  };
+
+  // Pindah season: di halaman menonton mulai dari episode 1, di halaman detail cukup ganti pilihan
+  const changeSeason = (id) => {
+    if (isWatching) watchEpisode(id, 1);
+    else setSelectedAnime(id);
   };
 
   // Hapus satu anime dari riwayat
@@ -254,6 +266,12 @@ function App() {
 
           <h2>{selectedAnimeData.title}</h2>
           <p>Episode {selectedEpisode}</p>
+          <SeasonPicker
+            seasons={getSeries(selectedAnimeData.id)?.seasons}
+            currentId={selectedAnimeData.id}
+            isAvailable={(id) => Boolean(findAnime(id))}
+            onSelect={changeSeason}
+          />
 
           <div className="episode-navigation">
             <button
@@ -303,6 +321,12 @@ function App() {
 
             <div className="detail-info">
               <h2>{selectedAnimeData.title}</h2>
+              <SeasonPicker
+            seasons={getSeries(selectedAnimeData.id)?.seasons}
+            currentId={selectedAnimeData.id}
+            isAvailable={(id) => Boolean(findAnime(id))}
+            onSelect={changeSeason}
+          />
               <p>⭐ {selectedAnimeData.rating}</p>
               <p>{selectedAnimeData.year}</p>
               <p>{selectedAnimeData.genre}</p>

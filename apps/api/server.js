@@ -104,4 +104,25 @@ app.get("/api/search", async (req, res) => {
   }
 });
 
+const IDS_QUERY = `query ($ids: [Int]) {
+  Page(perPage: 25) {
+    media(id_in: $ids, type: ANIME, isAdult: false) { ${MEDIA_FIELDS} }
+  }
+}`;
+
+// Ambil beberapa anime sekaligus berdasarkan ID AniList (dipakai untuk pilihan season)
+app.get("/api/anime", async (req, res) => {
+  const ids = String(req.query.ids || "")
+    .split(",")
+    .map((s) => Number.parseInt(s, 10))
+    .filter((n) => Number.isInteger(n) && n > 0)
+    .slice(0, 10);
+  if (!ids.length) return res.status(400).json({ error: "Parameter ids wajib diisi" });
+  try {
+    res.json({ data: await fromAniList(`ids:${ids.join(",")}`, IDS_QUERY, { ids }) });
+  } catch (err) {
+    res.status(502).json({ error: "Gagal menghubungi AniList", detail: err.message });
+  }
+});
+
 app.listen(PORT, () => console.log(`NEKONIME API di http://localhost:${PORT}`));
