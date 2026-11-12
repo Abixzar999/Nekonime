@@ -13,3 +13,33 @@
   font-size: 0.85rem;
   color: #a5a8b5;
 }
+
+.video-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin: 10px 4px 0;
+}
+
+.video-meta .video-credit {
+  margin: 0;
+}
+
+.video-fallback-link,
+.video-fallback-link:visited {
+  font-size: 0.85rem;
+  color: #ff812f;
+  text-decoration: none;
+}
+
+.video-fallback-link:hover {
+  text-decoration: underline;
+}
+
+.video-fallback-link:focus-visible {
+  outline: 2px solid #ff812f;
+  outline-offset: 3px;
+  border-radius: 4px;
+}

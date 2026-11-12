@@ -14,10 +14,12 @@ function VideoPlayer({ source }) {
     );
   }
 
+  const isYoutube = source.type === "youtube";
+
   return (
     <>
       <div className="video-player">
-        {source.type === "youtube" ? (
+        {isYoutube ? (
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${source.id}`}
             title="Pemutar video"
@@ -29,7 +31,20 @@ function VideoPlayer({ source }) {
           <video controls preload="metadata" src={source.url} />
         )}
       </div>
-      {source.credit && <p className="video-credit">Sumber: {source.credit}</p>}
+
+      <div className="video-meta">
+        {source.credit && <p className="video-credit">Sumber: {source.credit}</p>}
+        {isYoutube && (
+          <a
+            className="video-fallback-link"
+            href={`https://www.youtube.com/watch?v=${source.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Video tidak muncul? Tonton di YouTube ↗
+          </a>
+        )}
+      </div>
     </>
   );
 }
