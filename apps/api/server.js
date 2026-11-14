@@ -66,14 +66,14 @@ async function fromAniList(cacheKey, query, variables) {
   return data;
 }
 
-const TOP_QUERY = `query {
-  Page(perPage: 12) {
+const TOP_QUERY = `query ($page: Int) {
+  Page(page: $page, perPage: 12) {
     media(type: ANIME, sort: POPULARITY_DESC, isAdult: false) { ${MEDIA_FIELDS} }
   }
 }`;
 
-const SEARCH_QUERY = `query ($q: String) {
-  Page(perPage: 12) {
+const SEARCH_QUERY = `query ($q: String, $page: Int) {
+  Page(page: $page, perPage: 12) {
     media(type: ANIME, search: $q, sort: SEARCH_MATCH, isAdult: false) { ${MEDIA_FIELDS} }
   }
 }`;
@@ -84,6 +84,7 @@ const categoryOf = (req) => {
   const c = String(req.query.category || "");
   return Object.hasOwn(COUNTRY, c) ? c : "";
 };
+const pageOf = (req) => Math.min(50, Math.max(1, Number.parseInt(req.query.page, 10) || 1));
 const withCountry = (query, category) =>
   category
     ? query.replace("isAdult: false", `isAdult: false, countryOfOrigin: ${COUNTRY[category]}`)
@@ -100,7 +101,7 @@ app.get("/api/health", (req, res) => {
 app.get("/api/top", async (req, res) => {
   try {
     const cat = categoryOf(req);
-    res.json({ data: await fromAniList(`top:${cat}`, withCountry(TOP_QUERY, cat), {}) });
+    res.json({ data: await fromAniList(`top:${cat}:${pageOf(req)}`, withCountry(TOP_QUERY, cat), { page: pageOf(req) }) });
   } catch (err) {
     res.status(502).json({ error: "Gagal menghubungi AniList", detail: err.message });
   }
@@ -111,7 +112,7 @@ app.get("/api/search", async (req, res) => {
   if (!q) return res.status(400).json({ error: "Parameter q wajib diisi" });
   try {
     const cat = categoryOf(req);
-    res.json({ data: await fromAniList(`search:${cat}:${q.toLowerCase()}`, withCountry(SEARCH_QUERY, cat), { q }) });
+    res.json({ data: await fromAniList(`search:${cat}:${pageOf(req)}:${q.toLowerCase()}`, withCountry(SEARCH_QUERY, cat), { q, page: pageOf(req) }) });
   } catch (err) {
     res.status(502).json({ error: "Gagal menghubungi AniList", detail: err.message });
   }

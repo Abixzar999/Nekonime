@@ -28,7 +28,7 @@ function App() {
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [activePage, setActivePage] = useState("home");
-  const { items, loading, error } = useAnimeCatalog(search, activePage);
+  const { items, loading, loadingMore, error, hasMore, loadMore } = useAnimeCatalog(search, activePage);
   const [selectedAnime, setSelectedAnime] = useState(null);
   const [isWatching, setIsWatching] = useState(false);
   const [selectedEpisode, setSelectedEpisode] = useState(1);
@@ -225,6 +225,19 @@ function App() {
                   />
                 ))}
               </div>
+
+              {activePage !== "favorites" && hasMore && !loading && (
+                <div className="load-more">
+                  <button
+                    type="button"
+                    className="load-more-btn"
+                    onClick={loadMore}
+                    disabled={loadingMore}
+                  >
+                    {loadingMore ? "Memuat..." : "Muat lebih banyak"}
+                  </button>
+                </div>
+              )}
 
               {visibleAnime.length === 0 && (
                 <div className="empty-favorites" role="status" aria-live="polite">

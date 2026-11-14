@@ -10,15 +10,20 @@ async function getData(path, signal) {
   return json.data;
 }
 
-// category: "anime", "donghua", atau kosong untuk semua
-const withCategory = (path, category) =>
-  category ? `${path}${path.includes("?") ? "&" : "?"}category=${category}` : path;
+// Menambahkan ?category=...&page=... hanya jika perlu
+const withParams = (path, category, page) => {
+  const params = new URLSearchParams();
+  if (category) params.set("category", category);
+  if (page > 1) params.set("page", String(page));
+  const qs = params.toString();
+  return qs ? `${path}${path.includes("?") ? "&" : "?"}${qs}` : path;
+};
 
-export const searchAnime = (query, category, signal) =>
-  getData(withCategory(`/search?q=${encodeURIComponent(query)}`, category), signal);
+export const searchAnime = (query, category, page, signal) =>
+  getData(withParams(`/search?q=${encodeURIComponent(query)}`, category, page), signal);
 
-export const getTopAnime = (category, signal) =>
-  getData(withCategory("/top", category), signal);
+export const getTopAnime = (category, page, signal) =>
+  getData(withParams("/top", category, page), signal);
 
 export const getAnimeByIds = (ids, signal) =>
   getData(`/anime?ids=${ids.join(",")}`, signal);

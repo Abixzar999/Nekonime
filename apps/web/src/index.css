@@ -1246,3 +1246,39 @@ body {
 .video-meta .video-fallback-link {
   display: inline-flex;
 }
+
+/* ===== 12a: Tombol muat lebih banyak ===== */
+.load-more {
+  display: flex;
+  justify-content: center;
+  margin: 32px 0 8px;
+}
+
+.load-more .load-more-btn {
+  padding: 12px 28px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #f3f4f8;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.load-more .load-more-btn:hover:not(:disabled) {
+  border-color: #ff812f;
+  color: #ff812f;
+}
+
+.load-more .load-more-btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.load-more .load-more-btn:focus-visible {
+  outline: 2px solid #ff812f;
+  outline-offset: 3px;
+}
