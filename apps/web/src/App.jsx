@@ -26,9 +26,9 @@ import { useAnimeCatalog } from "./hooks/useAnimeCatalog";
 
 function App() {
   const [search, setSearch] = useState("");
-  const { items, loading, error } = useAnimeCatalog(search);
   const [showSearch, setShowSearch] = useState(false);
   const [activePage, setActivePage] = useState("home");
+  const { items, loading, error } = useAnimeCatalog(search, activePage);
   const [selectedAnime, setSelectedAnime] = useState(null);
   const [isWatching, setIsWatching] = useState(false);
   const [selectedEpisode, setSelectedEpisode] = useState(1);

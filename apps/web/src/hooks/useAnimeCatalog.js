@@ -6,8 +6,10 @@ const DEBOUNCE_MS = 500;
 const REQUEST_TIMEOUT_MS = 8000;
 
 // Mengurus pengambilan katalog: loading, error, debounce, dan fallback lokal.
-// Mengembalikan: { items, loading, error, usingFallback }
-export function useAnimeCatalog(query) {
+// page: "home", "anime", "donghua", dst. Hanya anime/donghua yang menyaring kategori.
+export function useAnimeCatalog(query, page) {
+  const category = page === "anime" || page === "donghua" ? page : "";
+
   const [state, setState] = useState({
     items: localAnime,
     loading: true,
@@ -16,29 +18,30 @@ export function useAnimeCatalog(query) {
   });
 
   useEffect(() => {
-    // `cancelled` = true jika efek ini sudah digantikan query baru.
     let cancelled = false;
     const controller = new AbortController();
     const trimmed = query.trim();
+    // Jeda ketik hanya untuk pencarian; pindah tab langsung memuat.
+    const delay = trimmed ? DEBOUNCE_MS : 0;
 
     const debounceId = setTimeout(async () => {
       if (cancelled) return;
       setState((prev) => ({ ...prev, loading: true, error: null }));
-
-      // Batas waktu: jika server tidak membalas, batalkan permintaan.
       const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
       try {
         const items = trimmed
-          ? await searchAnime(trimmed, controller.signal)
-          : await getTopAnime(controller.signal);
+          ? await searchAnime(trimmed, category, controller.signal)
+          : await getTopAnime(category, controller.signal);
         if (cancelled) return;
         setState({ items, loading: false, error: null, usingFallback: false });
       } catch {
-        if (cancelled) return; // query sudah berganti, abaikan hasil lama
+        if (cancelled) return;
         const lower = trimmed.toLowerCase();
-        const items = localAnime.filter((a) =>
-          `${a.title} ${a.genre}`.toLowerCase().includes(lower)
+        const items = localAnime.filter(
+          (a) =>
+            (!category || a.category === category) &&
+            `${a.title} ${a.genre}`.toLowerCase().includes(lower)
         );
         setState({
           items,
@@ -49,14 +52,14 @@ export function useAnimeCatalog(query) {
       } finally {
         clearTimeout(timeoutId);
       }
-    }, DEBOUNCE_MS);
+    }, delay);
 
     return () => {
       cancelled = true;
       clearTimeout(debounceId);
       controller.abort();
     };
-  }, [query]);
+  }, [query, category]);
 
   return state;
 }

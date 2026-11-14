@@ -1,5 +1,4 @@
 // Layanan untuk mengambil data anime dari backend NEKONIME (apps/api).
-// Backend yang memanggil AniList dan mengubah datanya ke format NEKONIME.
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
 
 async function getData(path, signal) {
@@ -11,10 +10,15 @@ async function getData(path, signal) {
   return json.data;
 }
 
-export const searchAnime = (query, signal) =>
-  getData(`/search?q=${encodeURIComponent(query)}`, signal);
+// category: "anime", "donghua", atau kosong untuk semua
+const withCategory = (path, category) =>
+  category ? `${path}${path.includes("?") ? "&" : "?"}category=${category}` : path;
 
-export const getTopAnime = (signal) => getData("/top", signal);
+export const searchAnime = (query, category, signal) =>
+  getData(withCategory(`/search?q=${encodeURIComponent(query)}`, category), signal);
+
+export const getTopAnime = (category, signal) =>
+  getData(withCategory("/top", category), signal);
 
 export const getAnimeByIds = (ids, signal) =>
   getData(`/anime?ids=${ids.join(",")}`, signal);
