@@ -78,6 +78,17 @@ const SEARCH_QUERY = `query ($q: String) {
   }
 }`;
 
+// Kategori tab -> negara asal di AniList
+const COUNTRY = { anime: "JP", donghua: "CN" };
+const categoryOf = (req) => {
+  const c = String(req.query.category || "");
+  return Object.hasOwn(COUNTRY, c) ? c : "";
+};
+const withCountry = (query, category) =>
+  category
+    ? query.replace("isAdult: false", `isAdult: false, countryOfOrigin: ${COUNTRY[category]}`)
+    : query;
+
 const app = express();
 // Hanya izinkan aplikasi web di localhost (ubah saat deploy).
 app.use(cors({ origin: [/^http:\/\/localhost:\d+$/] }));
@@ -88,7 +99,8 @@ app.get("/api/health", (req, res) => {
 
 app.get("/api/top", async (req, res) => {
   try {
-    res.json({ data: await fromAniList("top", TOP_QUERY, {}) });
+    const cat = categoryOf(req);
+    res.json({ data: await fromAniList(`top:${cat}`, withCountry(TOP_QUERY, cat), {}) });
   } catch (err) {
     res.status(502).json({ error: "Gagal menghubungi AniList", detail: err.message });
   }
@@ -98,7 +110,8 @@ app.get("/api/search", async (req, res) => {
   const q = String(req.query.q || "").trim().slice(0, 100);
   if (!q) return res.status(400).json({ error: "Parameter q wajib diisi" });
   try {
-    res.json({ data: await fromAniList(`search:${q.toLowerCase()}`, SEARCH_QUERY, { q }) });
+    const cat = categoryOf(req);
+    res.json({ data: await fromAniList(`search:${cat}:${q.toLowerCase()}`, withCountry(SEARCH_QUERY, cat), { q }) });
   } catch (err) {
     res.status(502).json({ error: "Gagal menghubungi AniList", detail: err.message });
   }
