@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import Icon from "./Icon";
 
 // Baris "Lanjutkan Menonton": bisa digeser, punya panah, hapus satu item, dan hapus semua.
 function HistoryRow({ history, onWatch, onRemove, onClear }) {
@@ -23,7 +24,7 @@ function HistoryRow({ history, onWatch, onRemove, onClear }) {
         </div>
         <div className="history-controls">
           <button type="button" className="history-clear" onClick={confirmClear}>
-            Hapus semua
+            <Icon name="trash" size={15} /> Hapus semua
           </button>
           <button
             type="button"
@@ -31,7 +32,7 @@ function HistoryRow({ history, onWatch, onRemove, onClear }) {
             onClick={() => scrollByPage(-1)}
             aria-label="Geser ke kiri"
           >
-            ◀
+            <Icon name="chevron-left" size={16} />
           </button>
           <button
             type="button"
@@ -39,7 +40,7 @@ function HistoryRow({ history, onWatch, onRemove, onClear }) {
             onClick={() => scrollByPage(1)}
             aria-label="Geser ke kanan"
           >
-            ▶
+            <Icon name="chevron-right" size={16} />
           </button>
         </div>
       </div>
@@ -59,7 +60,7 @@ function HistoryRow({ history, onWatch, onRemove, onClear }) {
                 <strong>{item.title}</strong>
                 <small>Episode {item.episode}</small>
               </span>
-              <span>▶</span>
+              <span><Icon name="play" size={16} filled /></span>
             </button>
             <button
               type="button"
@@ -68,7 +69,7 @@ function HistoryRow({ history, onWatch, onRemove, onClear }) {
               aria-label={`Hapus ${item.title} dari riwayat`}
               title="Hapus dari riwayat"
             >
-              ✕
+              <Icon name="close" size={13} />
             </button>
           </div>
         ))}

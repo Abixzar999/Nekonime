@@ -1210,3 +1210,39 @@ body {
   outline: 2px solid #ff812f;
   outline-offset: 3px;
 }
+
+/* ===== 11a: Ikon SVG ===== */
+.icon {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: -0.15em;
+}
+
+.icon-star {
+  color: #ffb347;
+}
+
+.icon-fav {
+  color: #ff812f;
+}
+
+.anime-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.favorite-button,
+.history-arrow,
+.history-clear,
+.history-remove,
+.video-fallback-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.video-meta .video-fallback-link {
+  display: inline-flex;
+}

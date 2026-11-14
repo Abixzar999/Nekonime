@@ -1,3 +1,5 @@
+import Icon from "./Icon";
+
 // Sementara: kelas CSS lama untuk latar poster. Akan dirapikan saat tahap CSS.
 const posterClasses = { 1: "poster-one", 2: "poster-two", 3: "poster-three" };
 
@@ -9,7 +11,9 @@ function AnimeCard({ anime, isFavorite, onSelect, onToggleFavorite }) {
       </div>
       <div className="anime-info">
         <span className="anime-category">{anime.categoryLabel}</span>
-        <span className="anime-rating">⭐ {anime.rating}</span>
+        <span className="anime-rating">
+          <Icon name="star" size={13} filled className="icon-star" /> {anime.rating}
+        </span>
       </div>
 
       <button
@@ -19,8 +23,9 @@ function AnimeCard({ anime, isFavorite, onSelect, onToggleFavorite }) {
           onToggleFavorite(anime.id);
         }}
         aria-label="Tambah atau hapus favorit"
+        aria-pressed={isFavorite}
       >
-        {isFavorite ? "❤️" : "🤍"}
+        <Icon name="heart" size={18} filled={isFavorite} className={isFavorite ? "icon-fav" : ""} />
       </button>
       <h3>{anime.title}</h3>
       <p>{anime.genre}</p>

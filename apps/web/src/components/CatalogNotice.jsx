@@ -1,4 +1,5 @@
 import "./CatalogNotice.css";
+import Icon from "./Icon";
 
 // Menampilkan status katalog: sedang memuat, atau pesan saat memakai data cadangan.
 function CatalogNotice({ loading, error }) {
@@ -14,7 +15,7 @@ function CatalogNotice({ loading, error }) {
   if (error) {
     return (
       <div className="catalog-notice catalog-notice--warning" role="status">
-        <span aria-hidden="true">⚠</span>
+        <span aria-hidden="true"><Icon name="alert" size={18} /></span>
         <span>{error}</span>
       </div>
     );

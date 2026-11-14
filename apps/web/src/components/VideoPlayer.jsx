@@ -1,4 +1,5 @@
 import "./VideoPlayer.css";
+import Icon from "./Icon";
 
 // Menampilkan video sesuai jenis sumbernya. Tanpa sumber: pesan "belum tersedia".
 function VideoPlayer({ source }) {
@@ -41,7 +42,7 @@ function VideoPlayer({ source }) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Video tidak muncul? Tonton di YouTube ↗
+            Video tidak muncul? Tonton di YouTube <Icon name="external" size={14} />
           </a>
         )}
       </div>
