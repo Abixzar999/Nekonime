@@ -1,0 +1,419 @@
+.topbar {
+  position: sticky;
+  top: 12px;
+  z-index: 50;
+  width: 90%;
+  max-width: 1300px;
+  margin: 20px auto 0;
+  padding: 10px 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03)), rgba(8, 10, 18, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+.topbar__row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar__brand {
+  display: flex;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.topbar__logo {
+  display: block;
+  height: 48px;
+  width: auto;
+}
+
+.topbar__links {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  gap: 4px;
+}
+
+.topbar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: #b9bccb;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.topbar__link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.topbar__link.is-active {
+  color: #ff812f;
+  background: rgba(255, 129, 47, 0.12);
+  border-color: rgba(255, 129, 47, 0.35);
+}
+
+.topbar__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 240px;
+  height: 40px;
+  padding: 0 12px;
+  background: rgba(8, 10, 18, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  transition: width 0.25s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.topbar__search:focus-within {
+  width: 300px;
+  border-color: #ff812f;
+  box-shadow: 0 0 0 3px rgba(255, 129, 47, 0.18);
+}
+
+.topbar__search-icon {
+  color: #a5a8b5;
+}
+
+.topbar__search input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 0.9rem;
+  color: #fff;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.topbar__search input::placeholder {
+  color: #7d8090;
+}
+
+.topbar__clear {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  color: #a5a8b5;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.topbar__clear:hover {
+  color: #ff812f;
+}
+
+.topbar__kbd {
+  padding: 1px 7px;
+  font: inherit;
+  font-size: 0.75rem;
+  color: #7d8090;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+}
+
+.topbar__search-toggle {
+  display: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  color: #f3f4f8;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.topbar__brand:focus-visible,
+.topbar__link:focus-visible,
+.topbar__clear:focus-visible,
+.topbar__search-toggle:focus-visible {
+  outline: 2px solid #ff812f;
+  outline-offset: 3px;
+}
+
+/* Jarak hero dari navbar baru */
+.topbar ~ main .hero {
+  margin-top: 28px;
+}
+
+/* Layar sempit dan HP: menu pindah ke baris sendiri, pencarian dibuka lewat tombol */
+@media (max-width: 960px) {
+  .topbar__row {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .topbar__brand {
+    order: 1;
+  }
+
+  .topbar__search-toggle {
+    display: grid;
+    order: 2;
+    margin-left: auto;
+  }
+
+  .topbar__links {
+    order: 3;
+    flex-basis: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .topbar__links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .topbar__search {
+    display: none;
+    order: 4;
+    flex-basis: 100%;
+    width: 100%;
+  }
+
+  .topbar__search.is-open {
+    display: flex;
+  }
+
+  .topbar__search:focus-within {
+    width: 100%;
+  }
+
+  .topbar__kbd {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .topbar {
+    padding: 8px 10px;
+  }
+
+  .topbar__link {
+    padding: 8px 11px;
+    font-size: 0.85rem;
+  }
+}
+
+/* ===== 13b: Tata letak tiga zona ===== */
+.topbar {
+  padding: 14px 28px;
+  top: 16px;
+}
+
+.topbar__brand {
+  padding: 6px 4px 2px;
+}
+
+.topbar__logo {
+  height: 52px;
+}
+
+@media (min-width: 1101px) {
+  .topbar__row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+  }
+
+  .topbar__brand {
+    justify-self: start;
+  }
+
+  .topbar__links {
+    justify-self: center;
+    flex: none;
+  }
+
+  .topbar__search {
+    justify-self: end;
+  }
+}
+
+@media (max-width: 520px) {
+  .topbar {
+    padding: 10px 16px;
+  }
+
+  .topbar__logo {
+    height: 44px;
+  }
+}
+
+/* ===== 13c: Pil kaca cair ===== */
+.topbar {
+  border-radius: 999px;
+  padding: 10px 26px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)),
+    rgba(10, 12, 22, 0.28);
+  -webkit-backdrop-filter: blur(7px) saturate(170%) brightness(1.08);
+  backdrop-filter: blur(7px) saturate(170%) brightness(1.08);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.55),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.22),
+    inset 0 0 22px rgba(255, 255, 255, 0.07),
+    0 14px 36px rgba(0, 0, 0, 0.4);
+}
+
+/* Tepi bercahaya: terang di sudut kiri atas dan kanan bawah */
+.topbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.12) 28%,
+    rgba(255, 255, 255, 0.06) 72%,
+    rgba(255, 255, 255, 0.8)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+
+/* Menu: ikon di atas, label di bawah */
+.topbar__link {
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 18px 7px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #eef0f7;
+  border-radius: 999px;
+}
+
+.topbar__link .icon {
+  width: 22px;
+  height: 22px;
+}
+
+.topbar__link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Item aktif: pil gelap tembus pandang dengan cahaya oranye tipis */
+.topbar__link.is-active {
+  color: #fff;
+  background: rgba(8, 10, 18, 0.5);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.18),
+    0 0 18px rgba(255, 129, 47, 0.22);
+}
+
+.topbar__link.is-active .icon {
+  color: #ff812f;
+}
+
+/* Kolom cari: kaca bening, bukan kotak gelap */
+.topbar__search {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+/* Layar sempit: pil dua baris terlihat aneh, pakai sudut membulat */
+@media (max-width: 1100px) {
+  .topbar {
+    border-radius: 30px;
+    padding: 10px 18px;
+  }
+}
+
+@media (max-width: 520px) {
+  .topbar {
+    border-radius: 24px;
+    padding: 8px 12px;
+  }
+
+  .topbar__link {
+    padding: 7px 12px 6px;
+  }
+}
+
+/* ===== 13d: Liquid Glass bening (menimpa 13c) ===== */
+.topbar {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  -webkit-backdrop-filter: blur(2px) saturate(160%) brightness(1.06);
+  backdrop-filter: blur(2px) saturate(160%) brightness(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 0 28px rgba(255, 255, 255, 0.05),
+    0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* Tepi bercahaya, dibuat samar */
+.topbar::before {
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.32),
+    rgba(255, 255, 255, 0.04) 30%,
+    rgba(255, 255, 255, 0.03) 70%,
+    rgba(255, 255, 255, 0.26)
+  );
+}
+
+/* Chromium: isi di belakang dibelokkan di tepi (refraksi) */
+html.lg-refract .topbar {
+  -webkit-backdrop-filter: url(#nk-liquid-glass) saturate(150%) brightness(1.05);
+  backdrop-filter: url(#nk-liquid-glass) saturate(150%) brightness(1.05);
+}
+
+/* Teks dan ikon tetap terbaca di atas latar yang cerah */
+.topbar__link {
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+}
+
+.topbar__link .icon {
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.5));
+}
+
+.topbar__link.is-active {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 16px rgba(255, 129, 47, 0.18);
+}
+
+.topbar__search {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.topbar__search-toggle {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+}

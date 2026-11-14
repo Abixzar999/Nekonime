@@ -1282,3 +1282,113 @@ body {
   outline: 2px solid #ff812f;
   outline-offset: 3px;
 }
+
+/* ===== 14a: Animasi (hanya untuk pengguna yang tidak mematikan animasi) ===== */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes nk-fade-up {
+    from { opacity: 0; translate: 0 18px; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+
+  @keyframes nk-fade-down {
+    from { opacity: 0; translate: 0 -14px; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+
+  @keyframes nk-float {
+    0%, 100% { translate: 0 0; }
+    50%      { translate: 0 -14px; }
+  }
+
+  @keyframes nk-glow {
+    0%, 100% { box-shadow: 0 8px 30px rgba(255, 129, 47, 0.33); }
+    50%      { box-shadow: 0 8px 42px rgba(255, 129, 47, 0.6); }
+  }
+
+  @keyframes nk-pop {
+    0%   { scale: 1; }
+    45%  { scale: 1.35; }
+    100% { scale: 1; }
+  }
+
+  /* Muncul saat halaman dibuka */
+  .topbar { animation: nk-fade-down 0.5s ease both; }
+
+  .hero,
+  .watch-history,
+  .catalog,
+  .anime-detail,
+  .video-page {
+    animation: nk-fade-up 0.55s ease both;
+  }
+
+  .hero { animation-delay: 0.08s; }
+  .watch-history { animation-delay: 0.16s; }
+
+  .hero-content > * {
+    animation: nk-fade-up 0.6s ease both;
+  }
+  .hero-content > :nth-child(1) { animation-delay: 0.15s; }
+  .hero-content > :nth-child(2) { animation-delay: 0.25s; }
+  .hero-content > :nth-child(3) { animation-delay: 0.35s; }
+  .hero-content > :nth-child(4) { animation-delay: 0.45s; }
+
+  /* Maskot melayang pelan, tombol utama berdenyut lembut */
+  .hero-mascot { animation: nk-float 5s ease-in-out infinite; }
+  .watch-button { animation: nk-glow 3s ease-in-out infinite; }
+
+  /* Kartu anime muncul berurutan (diulang tiap 12 kartu, aman untuk "muat lebih banyak") */
+  .anime-grid > .anime-card,
+  .history-list > .history-entry {
+    animation: nk-fade-up 0.45s ease both;
+  }
+  .anime-grid > .anime-card:nth-child(12n+2),  .history-list > .history-entry:nth-child(12n+2)  { animation-delay: 0.05s; }
+  .anime-grid > .anime-card:nth-child(12n+3),  .history-list > .history-entry:nth-child(12n+3)  { animation-delay: 0.10s; }
+  .anime-grid > .anime-card:nth-child(12n+4),  .history-list > .history-entry:nth-child(12n+4)  { animation-delay: 0.15s; }
+  .anime-grid > .anime-card:nth-child(12n+5),  .history-list > .history-entry:nth-child(12n+5)  { animation-delay: 0.20s; }
+  .anime-grid > .anime-card:nth-child(12n+6),  .history-list > .history-entry:nth-child(12n+6)  { animation-delay: 0.25s; }
+  .anime-grid > .anime-card:nth-child(12n+7),  .history-list > .history-entry:nth-child(12n+7)  { animation-delay: 0.30s; }
+  .anime-grid > .anime-card:nth-child(12n+8),  .history-list > .history-entry:nth-child(12n+8)  { animation-delay: 0.35s; }
+  .anime-grid > .anime-card:nth-child(12n+9),  .history-list > .history-entry:nth-child(12n+9)  { animation-delay: 0.40s; }
+  .anime-grid > .anime-card:nth-child(12n+10), .history-list > .history-entry:nth-child(12n+10) { animation-delay: 0.45s; }
+  .anime-grid > .anime-card:nth-child(12n+11), .history-list > .history-entry:nth-child(12n+11) { animation-delay: 0.50s; }
+  .anime-grid > .anime-card:nth-child(12n+12), .history-list > .history-entry:nth-child(12n+12) { animation-delay: 0.55s; }
+
+  /* Detail anime: poster dan info masuk bergantian */
+  .anime-detail .detail-poster { animation: nk-fade-up 0.6s ease 0.1s both; }
+  .anime-detail .detail-info   { animation: nk-fade-up 0.6s ease 0.2s both; }
+
+  /* Hati favorit "meletup" saat terisi */
+  .icon-fav { animation: nk-pop 0.35s ease; }
+
+  /* Kotak status dan pencarian mobile */
+  .catalog-notice { animation: nk-fade-up 0.35s ease both; }
+  .topbar__search.is-open { animation: nk-fade-down 0.25s ease both; }
+
+  /* Umpan balik saat ditekan */
+  .watch-button:active,
+  .watch-now-button:active,
+  .load-more-btn:active,
+  .season-btn:active,
+  .topbar__link:active,
+  .favorite-button:active,
+  .detail-fav:active,
+  .episode-buttons button:active {
+    scale: 0.96;
+  }
+
+  .watch-button,
+  .watch-now-button,
+  .load-more-btn,
+  .season-btn,
+  .topbar__link,
+  .favorite-button,
+  .detail-fav,
+  .episode-buttons button {
+    transition-property: color, background, border-color, box-shadow, scale;
+    transition-duration: 0.2s;
+  }
+
+  .topbar__logo { transition: scale 0.25s ease; }
+  .topbar__brand:hover .topbar__logo { scale: 1.06; }
+}

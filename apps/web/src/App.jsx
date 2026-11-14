@@ -15,6 +15,7 @@ import AnimeCard from "./components/AnimeCard";
 import CatalogNotice from "./components/CatalogNotice";
 import VideoPlayer from "./components/VideoPlayer";
 import HistoryRow from "./components/HistoryRow";
+import Navbar from "./components/Navbar";
 import SeasonPicker from "./components/SeasonPicker";
 import AnimeFacts from "./components/AnimeFacts";
 import { useSeasonAnime } from "./hooks/useSeasonAnime";
@@ -26,7 +27,6 @@ import { useAnimeCatalog } from "./hooks/useAnimeCatalog";
 
 function App() {
   const [search, setSearch] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
   const [activePage, setActivePage] = useState("home");
   const { items, loading, loadingMore, error, hasMore, loadMore } = useAnimeCatalog(search, activePage);
   const [selectedAnime, setSelectedAnime] = useState(null);
@@ -125,37 +125,12 @@ function App() {
     <div className="app">
       {!isWatching && !selectedAnime && (
         <>
-          <nav className="navbar">
-            <img
-              src="/images/nekonime-logo.png"
-              alt="Nekonime"
-              className="brand-logo"
-            />
-            <div className="nav-links">
-              <a href="#" className={activePage === "home" ? "active" : ""} aria-current={activePage === "home" ? "page" : undefined} onClick={(e) => { e.preventDefault(); setActivePage("home"); }}>Beranda</a>
-              <a href="#" className={activePage === "anime" ? "active" : ""} aria-current={activePage === "anime" ? "page" : undefined} onClick={(e) => { e.preventDefault(); setActivePage("anime"); }}>Anime</a>
-              <a href="#" className={activePage === "donghua" ? "active" : ""} aria-current={activePage === "donghua" ? "page" : undefined} onClick={(e) => { e.preventDefault(); setActivePage("donghua"); }}>Donghua</a>
-              <a href="#" className={activePage === "favorites" ? "active" : ""} aria-current={activePage === "favorites" ? "page" : undefined} onClick={(e) => { e.preventDefault(); setActivePage("favorites"); }}>Daftar Saya</a>
-            </div>
-
-            <button
-              className="search-button"
-              aria-expanded={showSearch}
-              onClick={() => setShowSearch(!showSearch)}
-            >
-              ⌕ Cari Anime
-            </button>
-
-            {showSearch && (
-              <input
-                className="search-input"
-                type="text"
-                placeholder="Ketik judul anime..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            )}
-          </nav>
+          <Navbar
+            activePage={activePage}
+            onNavigate={setActivePage}
+            search={search}
+            onSearchChange={setSearch}
+          />
 
           <main>
             {activePage === "home" && (
