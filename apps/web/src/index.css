@@ -1652,3 +1652,121 @@ body {
   align-items: center;
   gap: 5px;
 }
+
+/* ===== 19a: Hero dan kartu riwayat Liquid Glass ===== */
+.app .hero {
+  background:
+    radial-gradient(ellipse 42% 72% at 80% 50%, rgba(255, 129, 47, 0.34), transparent 72%),
+    radial-gradient(ellipse 38% 55% at 8% 0%, rgba(255, 170, 100, 0.12), transparent 70%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015)),
+    rgba(10, 12, 22, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 0 50px rgba(255, 255, 255, 0.03),
+    0 26px 64px rgba(0, 0, 0, 0.42);
+  -webkit-backdrop-filter: blur(6px) saturate(150%);
+  backdrop-filter: blur(6px) saturate(150%);
+}
+
+/* Kilau diagonal di sudut kiri atas */
+.app .hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(125deg, rgba(255, 255, 255, 0.12), transparent 26%);
+}
+
+/* Bola kaca bening di belakang maskot */
+.app .hero::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: calc(8% - 40px);
+  z-index: 0;
+  width: 360px;
+  aspect-ratio: 1;
+  translate: 0 -50%;
+  pointer-events: none;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.22), transparent 38%),
+    radial-gradient(circle at 50% 50%, rgba(255, 129, 47, 0.16), rgba(255, 255, 255, 0.02) 70%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 2px 1px rgba(255, 255, 255, 0.28),
+    inset 0 -18px 40px rgba(255, 129, 47, 0.12),
+    0 0 70px rgba(255, 129, 47, 0.18);
+  -webkit-backdrop-filter: blur(3px) saturate(160%);
+  backdrop-filter: blur(3px) saturate(160%);
+}
+
+/* Kartu riwayat */
+.app .history-item {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025)),
+    rgba(10, 12, 22, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 10px 26px rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+  backdrop-filter: blur(8px) saturate(150%);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.app .history-item img {
+  border-radius: 14px;
+}
+
+.app .history-item:hover {
+  border-color: rgba(255, 129, 47, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 14px 32px rgba(0, 0, 0, 0.4),
+    0 0 28px rgba(255, 129, 47, 0.16);
+}
+
+.app .history-item:focus-visible {
+  outline: 2px solid #ff812f;
+  outline-offset: 3px;
+}
+
+/* Layar sempit: bola kaca disembunyikan, hero lebih sederhana */
+@media (max-width: 768px) {
+  .app .hero::after {
+    display: none;
+  }
+}
+
+/* HP, layar sentuh, atau "kurangi transparansi": tanpa blur supaya ringan */
+@media (hover: none), (max-width: 700px), (prefers-reduced-transparency: reduce) {
+  .app .hero,
+  .app .history-item {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .app .hero {
+    background:
+      radial-gradient(ellipse 60% 70% at 80% 50%, rgba(255, 129, 47, 0.28), transparent 72%),
+      rgba(12, 14, 24, 0.78);
+  }
+
+  .app .history-item {
+    background: rgba(14, 16, 28, 0.72);
+  }
+}
+
+/* ===== 19b: Tanpa bola kaca di hero ===== */
+.app .hero::after {
+  content: none;
+}
+
+/* ===== 19b: Tanpa bola kaca di hero ===== */
+.app .hero::after {
+  content: none;
+}
