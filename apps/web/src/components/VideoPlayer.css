@@ -43,3 +43,105 @@
   outline-offset: 3px;
   border-radius: 4px;
 }
+
+/* ===== 17b: Mode bioskop (hanya di luar pemutar) ===== */
+.video-meta .cinema-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  font: inherit;
+  font-size: 0.8rem;
+  color: #c9ccd8;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.video-meta .cinema-toggle:hover,
+.video-meta .cinema-toggle[aria-pressed="true"] {
+  color: #ff812f;
+  border-color: rgba(255, 129, 47, 0.55);
+}
+
+.video-meta .cinema-toggle:focus-visible {
+  outline: 2px solid #ff812f;
+  outline-offset: 3px;
+}
+
+html.cinema-mode body {
+  background: #030409;
+}
+
+html.cinema-mode .app,
+html.cinema-mode .app .video-page {
+  background:
+    radial-gradient(ellipse 65% 45% at 50% 38%, rgba(255, 129, 47, 0.14), transparent 70%),
+    #030409;
+}
+
+/* Yang meredup hanya elemen di luar pemutar; sorot atau fokus mengembalikan terangnya */
+html.cinema-mode .video-page > :not(.video-player):not(.video-meta):not(.video-stage) {
+  opacity: 0.2;
+}
+
+html.cinema-mode .video-page > :not(.video-player):not(.video-meta):not(.video-stage):hover,
+html.cinema-mode .video-page > :not(.video-player):not(.video-meta):not(.video-stage):focus-within {
+  opacity: 1;
+}
+
+html.cinema-mode .app .video-player {
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.7),
+    0 0 130px rgba(255, 129, 47, 0.2);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.cinema-mode .video-page > :not(.video-player):not(.video-meta):not(.video-stage) {
+    transition: opacity 0.4s ease;
+  }
+}
+
+/* ===== 17c: Mode bioskop lebih terasa ===== */
+.video-stage {
+  position: relative;
+}
+
+.video-stage .video-player {
+  position: relative;
+  z-index: 1;
+}
+
+/* Cahaya ambien dari poster, di belakang pemutar (tidak menutupinya) */
+.cinema-glow {
+  position: absolute;
+  inset: -6% -5%;
+  z-index: 0;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  border-radius: 40px;
+  filter: blur(70px) saturate(1.7);
+  opacity: 0;
+}
+
+html.cinema-mode .cinema-glow {
+  opacity: 0.5;
+}
+
+/* Pemutar melebar dan semua baris di sekitarnya ikut selebar itu */
+html.cinema-mode .video-page > .video-stage,
+html.cinema-mode .video-page > .video-meta {
+  max-width: 1280px;
+}
+
+html.cinema-mode .video-stage .video-player {
+  max-width: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cinema-glow {
+    transition: opacity 0.6s ease;
+  }
+}

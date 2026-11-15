@@ -16,6 +16,7 @@ import CatalogNotice from "./components/CatalogNotice";
 import VideoPlayer from "./components/VideoPlayer";
 import HistoryRow from "./components/HistoryRow";
 import Navbar from "./components/Navbar";
+import OfficialLinks from "./components/OfficialLinks";
 import SeasonPicker from "./components/SeasonPicker";
 import AnimeFacts from "./components/AnimeFacts";
 import { useSeasonAnime } from "./hooks/useSeasonAnime";
@@ -278,7 +279,10 @@ function App() {
             </button>
           </div>
 
-          <VideoPlayer source={getVideoSource(selectedAnimeData.id, selectedEpisode)} />
+          <VideoPlayer
+            source={getVideoSource(selectedAnimeData.id, selectedEpisode)}
+            title={selectedAnimeData.title}
+          />
 
           <div className="episode-list">
             <h3>Daftar Episode</h3>
@@ -317,6 +321,7 @@ function App() {
             onSelect={changeSeason}
           />
               <AnimeFacts key={selectedAnimeData.id} anime={selectedAnimeData} />
+              <OfficialLinks title={selectedAnimeData.title} />
               <button
                 type="button"
                 className="detail-fav"
