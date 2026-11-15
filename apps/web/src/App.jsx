@@ -16,6 +16,7 @@ import CatalogNotice from "./components/CatalogNotice";
 import VideoPlayer from "./components/VideoPlayer";
 import HistoryRow from "./components/HistoryRow";
 import Navbar from "./components/Navbar";
+import HeroCollage from "./components/HeroCollage";
 import Icon from "./components/Icon";
 import OfficialLinks from "./components/OfficialLinks";
 import SeasonPicker from "./components/SeasonPicker";
@@ -138,6 +139,7 @@ function App() {
             {activePage === "home" && (
               <>
                 <section className="hero">
+                  <HeroCollage posters={items.map((a) => a.poster)} />
                   <img
                     src="/images/nekonime-mascot.png"
                     alt="Maskot NEKONIME"

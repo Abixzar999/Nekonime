@@ -1,0 +1,71 @@
+.hero-collage {
+  position: absolute;
+  inset: -22% -6%;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  pointer-events: none;
+  transform: rotate(-8deg);
+  opacity: 0.8;
+  -webkit-mask-image: radial-gradient(ellipse 46% 37% at 50% 50%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 46% 37% at 50% 50%, #000 40%, transparent 100%);
+}
+
+.hero-collage__col {
+  flex: 0 0 170px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 14px;
+}
+
+.hero-collage__col:nth-child(even) {
+  margin-top: -90px;
+}
+
+.hero-collage__col img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes nk-drift-up {
+  from { translate: 0 0; }
+  to   { translate: 0 -50%; }
+}
+
+@keyframes nk-drift-down {
+  from { translate: 0 -50%; }
+  to   { translate: 0 0; }
+}
+
+/* Gerak hanya di layar lebar dengan mouse, dan tidak untuk yang mematikan animasi */
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (min-width: 769px) {
+  .hero-collage__col {
+    will-change: translate;
+    animation: nk-drift-up 70s linear infinite;
+  }
+
+  .hero-collage__col:nth-child(even) {
+    animation-name: nk-drift-down;
+    animation-duration: 85s;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-collage {
+    opacity: 0.55;
+  }
+
+  .hero-collage__col:nth-child(n + 5) {
+    display: none;
+  }
+
+  .hero-collage__col {
+    flex-basis: 120px;
+  }
+}
