@@ -16,6 +16,7 @@ import CatalogNotice from "./components/CatalogNotice";
 import VideoPlayer from "./components/VideoPlayer";
 import HistoryRow from "./components/HistoryRow";
 import Navbar from "./components/Navbar";
+import Icon from "./components/Icon";
 import OfficialLinks from "./components/OfficialLinks";
 import SeasonPicker from "./components/SeasonPicker";
 import AnimeFacts from "./components/AnimeFacts";
@@ -153,7 +154,7 @@ function App() {
                       className="watch-button"
                       onClick={() => setActivePage("anime")}
                     >
-                      ▶ Jelajahi Sekarang
+                      <Icon name="play" size={16} filled /> Jelajahi Sekarang
                     </button>
                   </div>
                 </section>
@@ -251,7 +252,7 @@ function App() {
       {isWatching && selectedAnimeData ? (
         <section className="video-page">
           <button onClick={() => setIsWatching(false)}>
-            ← Kembali ke Detail
+            <Icon name="arrow-left" size={16} /> Kembali ke Detail
           </button>
 
           <h2>{selectedAnimeData.title}</h2>
@@ -268,14 +269,14 @@ function App() {
               disabled={selectedEpisode === 1}
               onClick={() => changeEpisode(selectedEpisode - 1)}
             >
-              ← Episode Sebelumnya
+              <Icon name="arrow-left" size={16} /> Episode Sebelumnya
             </button>
 
             <button
               disabled={selectedEpisode === selectedAnimeData.totalEpisodes}
               onClick={() => changeEpisode(selectedEpisode + 1)}
             >
-              Episode Berikutnya →
+              Episode Berikutnya <Icon name="arrow-right" size={16} />
             </button>
           </div>
 
@@ -302,7 +303,7 @@ function App() {
       ) : selectedAnimeData && (
         <section className="anime-detail">
           <button onClick={() => setSelectedAnime(null)}>
-            ← Kembali
+            <Icon name="arrow-left" size={16} /> Kembali
           </button>
 
           <div className="detail-content">
@@ -329,8 +330,8 @@ function App() {
                 onClick={() => toggleFavorite(selectedAnimeData)}
               >
                 {isFavorite(selectedAnimeData.id)
-                  ? "❤️ Tersimpan di Daftar Saya"
-                  : "🤍 Simpan ke Daftar Saya"}
+                  ? <><Icon name="heart" size={16} filled className="icon-fav" /> Tersimpan di Daftar Saya</>
+                  : <><Icon name="heart" size={16} /> Simpan ke Daftar Saya</>}
               </button>
               
               
@@ -339,7 +340,7 @@ function App() {
                 className="watch-now-button"
                 onClick={() => watchEpisode(selectedAnime, selectedEpisode)}
               >
-                ▶ Tonton Sekarang
+                <Icon name="play" size={16} filled /> Tonton Sekarang
               </button>
             </div>
           </div>

@@ -1,35 +1,47 @@
 import Icon from "./Icon";
+import "./AnimeCard.css";
 
-// Sementara: kelas CSS lama untuk latar poster. Akan dirapikan saat tahap CSS.
-const posterClasses = { 1: "poster-one", 2: "poster-two", 3: "poster-three" };
-
+// Kartu anime bergaya Liquid Glass: poster penuh, info di panel kaca bawah.
 function AnimeCard({ anime, isFavorite, onSelect, onToggleFavorite }) {
   return (
-    <article className="anime-card" onClick={() => onSelect(anime.id)}>
-      <div className={`anime-poster ${posterClasses[anime.id] || ""}`}>
-        <img src={anime.poster} alt={anime.title} />
-      </div>
-      <div className="anime-info">
-        <span className="anime-category">{anime.categoryLabel}</span>
-        <span className="anime-rating">
-          <Icon name="star" size={13} filled className="icon-star" /> {anime.rating}
+    <article className="nk-card">
+      <button
+        type="button"
+        className="nk-card__open"
+        onClick={() => onSelect(anime.id)}
+      >
+        <span className="nk-card__poster">
+          {anime.poster && <img src={anime.poster} alt="" loading="lazy" />}
         </span>
-      </div>
+
+        <span className="nk-card__badge">{anime.categoryLabel}</span>
+
+        <span className="nk-card__glass">
+          <span className="nk-card__title">{anime.title}</span>
+          <span className="nk-card__genre">{anime.genre}</span>
+          <span className="nk-card__meta">
+            <span className="nk-card__chip">
+              <Icon name="star" size={12} filled className="icon-star" /> {anime.rating}
+            </span>
+            <span className="nk-card__chip">{anime.year}</span>
+          </span>
+        </span>
+      </button>
 
       <button
-        className="favorite-button"
-        onClick={(e) => {
-          e.stopPropagation();
-          onToggleFavorite(anime.id);
-        }}
-        aria-label="Tambah atau hapus favorit"
+        type="button"
+        className="nk-card__fav"
+        onClick={() => onToggleFavorite(anime.id)}
+        aria-label={`${isFavorite ? "Hapus" : "Simpan"} ${anime.title} ${isFavorite ? "dari" : "ke"} Daftar Saya`}
         aria-pressed={isFavorite}
       >
-        <Icon name="heart" size={18} filled={isFavorite} className={isFavorite ? "icon-fav" : ""} />
+        <Icon
+          name="heart"
+          size={17}
+          filled={isFavorite}
+          className={isFavorite ? "icon-fav" : ""}
+        />
       </button>
-      <h3>{anime.title}</h3>
-      <p>{anime.genre}</p>
-      <span className="anime-year">{anime.year}</span>
     </article>
   );
 }

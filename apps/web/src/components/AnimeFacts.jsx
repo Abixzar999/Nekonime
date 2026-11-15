@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Icon from "./Icon";
 
 const STATUS_LABELS = {
   FINISHED: "Tamat",
@@ -18,7 +19,7 @@ function AnimeFacts({ anime }) {
 
   // Jumlah episode hanya ditampilkan untuk yang sudah tamat (angkanya pasti).
   const chips = [
-    anime.rating && anime.rating !== "-" ? `⭐ ${anime.rating}` : null,
+    anime.rating && anime.rating !== "-" ? <><Icon name="star" size={13} filled className="icon-star" /> {anime.rating}</> : null,
     anime.year && anime.year !== "-" ? anime.year : null,
     anime.status === "FINISHED" && anime.totalEpisodes ? `${anime.totalEpisodes} episode` : null,
     STATUS_LABELS[anime.status] || null
@@ -28,8 +29,8 @@ function AnimeFacts({ anime }) {
     <div className="detail-facts">
       {chips.length > 0 && (
         <div className="detail-chips">
-          {chips.map((chip) => (
-            <span className="detail-chip" key={chip}>{chip}</span>
+          {chips.map((chip, i) => (
+            <span className="detail-chip" key={i}>{chip}</span>
           ))}
         </div>
       )}

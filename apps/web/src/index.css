@@ -1608,3 +1608,47 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
   }
 }
+
+/* ===== 11b: Ikon di tombol aksi ===== */
+.app .video-page > button,
+.app .anime-detail > button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+}
+
+.app .episode-navigation button,
+.app .watch-button,
+.app .watch-now-button,
+.app .detail-fav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* ===== 18b: Jarak rata di panel detail ===== */
+.app .anime-detail .detail-info > * {
+  margin: 0;
+}
+
+.app .anime-detail .detail-info > .watch-now-button {
+  margin-top: 6px;
+}
+
+.app .anime-detail .official-links {
+  margin-top: 10px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.app .anime-detail .official-links__label {
+  margin: 0;
+}
+
+.app .anime-detail .detail-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
