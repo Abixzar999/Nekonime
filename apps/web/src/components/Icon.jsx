@@ -1,5 +1,6 @@
 // Ikon SVG sederhana bergaya garis. Warna mengikuti teks (currentColor).
 const ICONS = {
+  "chevron-down": <path d="m6 9 6 6 6-6" />,
   film: (
     <>
       <rect width="18" height="18" x="3" y="3" rx="2" />

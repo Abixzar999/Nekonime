@@ -4,11 +4,49 @@ import Icon from "./Icon";
 import OfficialLinks from "./OfficialLinks";
 import { loadJSON, saveJSON } from "../utils/storage";
 
+let youtubeApi = null;
+
+// Memuat YouTube IFrame Player API (resmi) satu kali saja.
+function loadYouTubeApi() {
+  if (window.YT && window.YT.Player) return Promise.resolve(window.YT);
+  if (!youtubeApi) {
+    youtubeApi = new Promise((resolve, reject) => {
+      const previous = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        if (previous) previous();
+        resolve(window.YT);
+      };
+      const script = document.createElement("script");
+      script.src = "https://www.youtube.com/iframe_api";
+      script.async = true;
+      script.onerror = () => {
+        youtubeApi = null;
+        reject(new Error("API YouTube gagal dimuat"));
+      };
+      document.head.appendChild(script);
+    });
+  }
+  return youtubeApi;
+}
+
 // Menampilkan video sesuai jenis sumbernya. Tanpa sumber: pesan "belum tersedia".
-function VideoPlayer({ source, title, poster }) {
+// startAt: detik awal. onProgress(posisi, durasi): dipanggil berkala untuk menyimpan progres.
+function VideoPlayer({ source, title, poster, startAt = 0, onProgress }) {
   const [cinema, setCinema] = useState(() => loadJSON("nekonime-cinema", false));
+  const [apiFailed, setApiFailed] = useState(false);
   const stageRef = useRef(null);
+  const mountRef = useRef(null);
+  const progressRef = useRef(onProgress);
+  const startRef = useRef(startAt);
+  const lastSaveRef = useRef(0);
   const active = cinema && Boolean(source);
+  const youtubeId = source && source.type === "youtube" ? source.id : null;
+
+  // Simpan versi terbaru callback dan detik awal tanpa membuat ulang pemutar.
+  useEffect(() => {
+    progressRef.current = onProgress;
+    startRef.current = startAt;
+  });
 
   const setMode = (on) => {
     setCinema(on);
@@ -41,6 +79,75 @@ function VideoPlayer({ source, title, poster }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [cinema, source]);
 
+  // Pemutar YouTube lewat IFrame Player API, untuk membaca posisi dan durasi.
+  useEffect(() => {
+    if (!youtubeId || apiFailed) return undefined;
+    const parent = mountRef.current;
+    if (!parent) return undefined;
+
+    let cancelled = false;
+    let player = null;
+    let timer = null;
+
+    const report = () => {
+      try {
+        const position = player.getCurrentTime();
+        const duration = player.getDuration();
+        if (duration > 0 && progressRef.current) progressRef.current(position, duration);
+      } catch {
+        // pemutar belum siap, abaikan
+      }
+    };
+
+    loadYouTubeApi()
+      .then((YT) => {
+        if (cancelled) return;
+        const holder = document.createElement("div");
+        parent.appendChild(holder);
+        player = new YT.Player(holder, {
+          videoId: youtubeId,
+          host: "https://www.youtube-nocookie.com",
+          playerVars: {
+            rel: 0,
+            color: "white",
+            playsinline: 1,
+            start: Math.floor(startRef.current || 0),
+            origin: window.location.origin
+          },
+          events: {
+            onReady: (e) => {
+              e.target.getIframe().title = "Pemutar video";
+            },
+            onStateChange: (e) => {
+              clearInterval(timer);
+              if (e.data === YT.PlayerState.PLAYING) {
+                timer = setInterval(report, 10000);
+              } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
+                report();
+              }
+            }
+          }
+        });
+      })
+      .catch(() => {
+        if (!cancelled) setApiFailed(true);
+      });
+
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+      if (player) {
+        report();
+        try {
+          player.destroy();
+        } catch {
+          // sudah dihapus, abaikan
+        }
+      }
+      parent.innerHTML = "";
+    };
+  }, [youtubeId, apiFailed]);
+
   if (!source) {
     return (
       <div className="video-player">
@@ -56,6 +163,48 @@ function VideoPlayer({ source, title, poster }) {
 
   const isYoutube = source.type === "youtube";
 
+  let player;
+  if (isYoutube && !apiFailed) {
+    player = <div className="video-player" ref={mountRef} />;
+  } else if (isYoutube) {
+    player = (
+      <div className="video-player">
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${source.id}?rel=0&color=white&playsinline=1`}
+          title="Pemutar video"
+          allow="encrypted-media; picture-in-picture; fullscreen"
+          allowFullScreen
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
+      </div>
+    );
+  } else {
+    player = (
+      <div className="video-player">
+        <video
+          controls
+          preload="metadata"
+          src={source.url}
+          onLoadedMetadata={(e) => {
+            if (startAt > 0) e.currentTarget.currentTime = startAt;
+          }}
+          onTimeUpdate={(e) => {
+            const v = e.currentTarget;
+            const now = Date.now();
+            if (v.duration && now - lastSaveRef.current > 10000) {
+              lastSaveRef.current = now;
+              if (onProgress) onProgress(v.currentTime, v.duration);
+            }
+          }}
+          onPause={(e) => {
+            const v = e.currentTarget;
+            if (v.duration && onProgress) onProgress(v.currentTime, v.duration);
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="video-stage" ref={stageRef}>
@@ -66,19 +215,7 @@ function VideoPlayer({ source, title, poster }) {
             aria-hidden="true"
           />
         )}
-        <div className="video-player">
-          {isYoutube ? (
-            <iframe
-              src={`https://www.youtube-nocookie.com/embed/${source.id}?rel=0&color=white&playsinline=1`}
-              title="Pemutar video"
-              allow="encrypted-media; picture-in-picture; fullscreen"
-              allowFullScreen
-              referrerPolicy="strict-origin-when-cross-origin"
-            />
-          ) : (
-            <video controls preload="metadata" src={source.url} />
-          )}
-        </div>
+        {player}
       </div>
 
       <div className="video-meta">
