@@ -1,0 +1,67 @@
+.official-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.official-links__label {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: #a5a8b5;
+}
+
+.official-links__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: inherit;
+  gap: 8px;
+}
+
+.official-link,
+.official-link:visited {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  font-size: 0.85rem;
+  color: #f3f4f8;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.official-link small {
+  font-size: 0.72rem;
+  color: #a5a8b5;
+}
+
+.official-link:hover {
+  color: #ff812f;
+  border-color: rgba(255, 129, 47, 0.55);
+}
+
+.official-link:focus-visible {
+  outline: 2px solid #ff812f;
+  outline-offset: 3px;
+}
+
+/* Halaman detail: di bawah tombol Tonton dan Simpan */
+.anime-detail .detail-info .official-links {
+  order: 8;
+}
+
+/* Di kotak "Video belum tersedia" */
+.video-placeholder .official-links {
+  align-items: center;
+  margin-top: 14px;
+  padding: 0 12px;
+}
+
+.video-placeholder .official-links__list {
+  justify-content: center;
+}

@@ -1481,3 +1481,130 @@ body {
     border-radius: 22px;
   }
 }
+
+/* ===== 17a: Halaman menonton ala bioskop kaca ===== */
+.app .video-page {
+  background:
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(255, 129, 47, 0.10), transparent 70%),
+    #090b12;
+}
+
+.app .video-page h2 {
+  margin-top: 26px;
+  font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+  letter-spacing: -0.01em;
+}
+
+/* Label "Episode N" jadi pil kaca, sejajar dengan kolom */
+.app .video-page > p {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: 10px;
+  margin-left: max(0px, calc((100% - 1000px) / 2));
+  margin-right: auto;
+  padding: 5px 14px;
+  font-size: 0.85rem;
+  color: #ff812f;
+  background: rgba(255, 129, 47, 0.1);
+  border: 1px solid rgba(255, 129, 47, 0.35);
+  border-radius: 999px;
+}
+
+/* Bingkai pemutar: hanya di luar iframe, tidak menutupi pemutar */
+.app .video-player {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.55),
+    0 0 90px rgba(255, 129, 47, 0.10);
+}
+
+/* Tombol episode sebelumnya / berikutnya */
+.app .episode-navigation button {
+  padding: 11px 22px;
+  color: #f3f4f8;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.app .episode-navigation button:hover:not(:disabled) {
+  color: #fff;
+  background: rgba(255, 129, 47, 0.18);
+  border-color: rgba(255, 129, 47, 0.6);
+}
+
+/* Daftar episode */
+.app .episode-list h3 {
+  margin-bottom: 16px;
+  font-size: 1.15rem;
+}
+
+.app .episode-buttons {
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 10px;
+}
+
+.app .episode-buttons button {
+  padding: 12px 8px;
+  font-size: 0.88rem;
+  color: #d6d9e4;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.app .episode-buttons button:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 129, 47, 0.55);
+}
+
+.app .episode-buttons button.active {
+  color: #fff;
+  font-weight: 700;
+  background: linear-gradient(180deg, rgba(255, 166, 98, 0.92), rgba(255, 129, 47, 0.82));
+  border-color: rgba(255, 190, 140, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 18px rgba(255, 129, 47, 0.25);
+}
+
+.app .episode-buttons button:focus-visible,
+.app .episode-navigation button:focus-visible {
+  outline: 2px solid #ff812f;
+  outline-offset: 3px;
+}
+
+/* Kredit sumber: label kecil dengan titik oranye */
+.app .video-meta .video-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  color: #c9ccd8;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+}
+
+.app .video-meta .video-credit::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: #ff812f;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(255, 129, 47, 0.8);
+}
+
+@media (max-width: 600px) {
+  .app .video-player {
+    border-radius: 16px;
+  }
+
+  .app .episode-buttons {
+    grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  }
+}
