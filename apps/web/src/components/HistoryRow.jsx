@@ -100,13 +100,13 @@ function HistoryRow({ history, onWatch, onRemove, onClear }) {
                 <span className="nk-hist__title" title={entry.title}>{entry.title}</span>
                 <span className="nk-hist__line">
                   <span className="nk-hist__ep">Episode {entry.episode}</span>
-                  {entry.duration > 0 && (
-                    <span className="nk-hist__time">
-                      {finished(entry.position, entry.duration)
-                        ? "Selesai"
-                        : `${fmt(entry.position)} / ${fmt(entry.duration)}`}
-                    </span>
-                  )}
+                  <span className={`nk-hist__time${entry.duration > 0 ? "" : " is-empty"}`}>
+                    {entry.duration > 0
+                      ? finished(entry.position, entry.duration)
+                        ? "Selesai ditonton"
+                        : `Berhenti di ${fmt(entry.position)} / ${fmt(entry.duration)}`
+                      : "Menit belum tercatat"}
+                  </span>
                 </span>
                 {entry.duration > 0 && (
                   <span className="nk-hist__bar" aria-hidden="true">

@@ -161,3 +161,12 @@ html.dialog-open {
     background: rgba(14, 16, 28, 0.94);
   }
 }
+
+/* ===== 22c: Dialog tepat di tengah layar ===== */
+.nk-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
+  max-height: calc(100dvh - 32px);
+}

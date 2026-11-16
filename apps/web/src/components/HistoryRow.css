@@ -291,3 +291,13 @@
     scale: 0.985;
   }
 }
+
+/* ===== 22c: Teks menit tontonan ===== */
+.nk-hist__time {
+  color: #d6d9e4;
+}
+
+.nk-hist__time.is-empty {
+  color: #7d8090;
+  font-style: italic;
+}
