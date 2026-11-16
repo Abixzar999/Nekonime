@@ -71,11 +71,8 @@ function HistoryRow({ history, onWatch, onRemove, onClear }) {
           <p className="eyebrow">YOUR HISTORY</p>
           <h2>Lanjutkan Menonton</h2>
         </div>
-        <button type="button" className="nk-hist__clear" onClick={() => setDialog({ type: "all" })}>
-          <Icon name="trash" size={15} /> Hapus semua
-        </button>
       </div>
-      <p className="nk-hist__hint">Tekan lama (atau klik kanan) sebuah riwayat untuk opsi hapus.</p>
+      <p className="nk-hist__hint">Tekan lama, klik kanan, atau tekan Delete pada sebuah riwayat untuk opsi hapus.</p>
 
       <ul className="nk-hist__list">
         {visible.map((entry) => (
@@ -89,7 +86,17 @@ function HistoryRow({ history, onWatch, onRemove, onClear }) {
             onPointerCancel={endPress}
             onContextMenu={(e) => openMenu(e, entry)}
           >
-            <button type="button" className="nk-hist__open" onClick={() => handleOpen(entry)}>
+            <button
+              type="button"
+              className="nk-hist__open"
+              onClick={() => handleOpen(entry)}
+              onKeyDown={(e) => {
+                if (e.key === "Delete" || e.key === "Backspace") {
+                  e.preventDefault();
+                  setDialog({ type: "menu", item: entry });
+                }
+              }}
+            >
               <img
                 src={entry.poster || `/images/anime/anime-${entry.animeId}.jpeg`}
                 alt=""
@@ -117,15 +124,6 @@ function HistoryRow({ history, onWatch, onRemove, onClear }) {
               <span className="nk-hist__play" aria-hidden="true">
                 <Icon name="play" size={15} filled />
               </span>
-            </button>
-            <button
-              type="button"
-              className="nk-hist__remove"
-              onClick={() => setDialog({ type: "one", item: entry })}
-              aria-label={`Hapus ${entry.title} dari riwayat`}
-              title="Hapus dari riwayat"
-            >
-              <Icon name="close" size={13} />
             </button>
           </li>
         ))}
@@ -197,10 +195,7 @@ function HistoryRow({ history, onWatch, onRemove, onClear }) {
             {
               label: "Hapus semua",
               tone: "danger-outline",
-              onClick: () => {
-                onClear();
-                closeDialog();
-              }
+              onClick: () => setDialog({ type: "all" })
             }
           ]}
           onClose={closeDialog}

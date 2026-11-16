@@ -106,6 +106,8 @@ function VideoPlayer({ source, title, poster, startAt = 0, onProgress }) {
         parent.appendChild(holder);
         player = new YT.Player(holder, {
           videoId: youtubeId,
+          width: "100%",
+          height: "100%",
           host: "https://www.youtube-nocookie.com",
           playerVars: {
             rel: 0,
