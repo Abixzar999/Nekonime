@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import Icon from "./Icon";
 import LiquidGlassFilter from "./LiquidGlassFilter";
 import "./Navbar.css";
@@ -10,11 +10,12 @@ const LINKS = [
   { page: "favorites", label: "Daftar Saya", icon: "heart" }
 ];
 
-// Bilah atas: logo, menu halaman, dan pencarian.
+// Bilah atas: logo, menu halaman (pil meluncur), dan pencarian.
 function Navbar({ activePage, onNavigate, search, onSearchChange }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const inputRef = useRef(null);
   const barRef = useRef(null);
+  const linksRef = useRef(null);
 
   // Di layar sempit kolom cari tersembunyi; saat dibuka, langsung fokus.
   useEffect(() => {
@@ -34,6 +35,38 @@ function Navbar({ activePage, onNavigate, search, onSearchChange }) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  // Pil penanda halaman aktif: posisinya diukur dari tombol aktif dan dipasang lewat
+  // variabel CSS, jadi perpindahannya bisa dianimasikan (meluncur) oleh CSS.
+  useLayoutEffect(() => {
+    const nav = linksRef.current;
+    if (!nav) return undefined;
+    let frame = 0;
+
+    const place = () => {
+      const el = nav.querySelector(".topbar__link.is-active");
+      if (!el) return;
+      nav.style.setProperty("--pill-x", `${el.offsetLeft}px`);
+      nav.style.setProperty("--pill-y", `${el.offsetTop}px`);
+      nav.style.setProperty("--pill-w", `${el.offsetWidth}px`);
+      nav.style.setProperty("--pill-h", `${el.offsetHeight}px`);
+    };
+
+    place();
+    if (!nav.hasAttribute("data-ready")) {
+      // Aktifkan transisi setelah posisi awal terpasang, supaya tidak meluncur dari pojok.
+      frame = requestAnimationFrame(() => nav.setAttribute("data-ready", ""));
+    }
+
+    const observer = new ResizeObserver(place);
+    observer.observe(nav);
+    nav.querySelectorAll(".topbar__link").forEach((el) => observer.observe(el));
+
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [activePage]);
 
   const handleKeyDown = (e) => {
     if (e.key === "Escape") {
@@ -56,7 +89,8 @@ function Navbar({ activePage, onNavigate, search, onSearchChange }) {
           <img src="/images/nekonime-logo.png" alt="" className="topbar__logo" />
         </button>
 
-        <nav className="topbar__links" aria-label="Menu utama">
+        <nav className="topbar__links" aria-label="Menu utama" ref={linksRef}>
+          <span className="topbar__pill" aria-hidden="true" />
           {LINKS.map(({ page, label, icon }) => {
             const active = activePage === page;
             return (

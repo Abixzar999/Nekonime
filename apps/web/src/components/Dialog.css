@@ -1,0 +1,163 @@
+html.dialog-open {
+  overflow: hidden;
+}
+
+.nk-dialog {
+  width: min(92vw, 440px);
+  max-width: none;
+  padding: 0;
+  color: #fff;
+  background: transparent;
+  border: none;
+  overflow: visible;
+}
+
+/* Fokus lembut: latar halaman mengabur dan sedikit meredup */
+.nk-dialog::backdrop {
+  background: rgba(4, 5, 10, 0.5);
+  -webkit-backdrop-filter: blur(10px) saturate(115%);
+  backdrop-filter: blur(10px) saturate(115%);
+}
+
+.nk-dialog__box {
+  padding: 26px 26px 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)),
+    rgba(14, 16, 28, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 26px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 30px 80px rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+}
+
+.nk-dialog__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 14px;
+  color: #ff812f;
+  background: rgba(255, 129, 47, 0.12);
+  border: 1px solid rgba(255, 129, 47, 0.35);
+  border-radius: 50%;
+}
+
+.nk-dialog__title {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.nk-dialog__message {
+  margin: 0 0 22px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #c9ccd8;
+  overflow-wrap: anywhere;
+}
+
+.nk-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.nk-dialog__btn {
+  padding: 10px 20px;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: filter 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.nk-dialog__btn:focus-visible {
+  outline: 2px solid #ff812f;
+  outline-offset: 3px;
+}
+
+.nk-dialog__btn--ghost {
+  color: #d6d9e4;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.nk-dialog__btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nk-dialog__btn--primary {
+  background: linear-gradient(180deg, rgba(255, 166, 98, 0.95), rgba(255, 129, 47, 0.85));
+  border-color: rgba(255, 190, 140, 0.35);
+}
+
+.nk-dialog__btn--danger {
+  background: linear-gradient(180deg, rgba(255, 118, 74, 0.95), rgba(226, 74, 42, 0.9));
+  border-color: rgba(255, 170, 140, 0.35);
+}
+
+.nk-dialog__btn--danger-outline {
+  color: #ff9a7a;
+  background: rgba(255, 90, 60, 0.08);
+  border-color: rgba(255, 110, 80, 0.45);
+}
+
+.nk-dialog__btn--primary:hover,
+.nk-dialog__btn--danger:hover {
+  filter: brightness(1.08);
+}
+
+.nk-dialog__btn--danger-outline:hover {
+  background: rgba(255, 90, 60, 0.16);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nk-dialog[open] {
+    animation: nk-dialog-in 0.34s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+  }
+
+  .nk-dialog[open]::backdrop {
+    animation: nk-backdrop-in 0.3s ease both;
+  }
+}
+
+@keyframes nk-dialog-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.94); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes nk-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (max-width: 480px) {
+  .nk-dialog__actions {
+    flex-direction: column-reverse;
+  }
+
+  .nk-dialog__btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .nk-dialog::backdrop {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(4, 5, 10, 0.82);
+  }
+
+  .nk-dialog__box {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(14, 16, 28, 0.94);
+  }
+}

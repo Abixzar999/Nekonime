@@ -417,3 +417,59 @@ html.lg-refract .topbar {
   border-color: rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.04);
 }
+
+/* ===== 22b: Pil menu yang meluncur ===== */
+.topbar__links {
+  position: relative;
+}
+
+.topbar__link {
+  position: relative;
+  z-index: 1;
+}
+
+/* Latar aktif dipindah ke pil yang meluncur, tombolnya sendiri transparan */
+.topbar__links .topbar__link.is-active {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.topbar__pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: var(--pill-w, 0px);
+  height: var(--pill-h, 0px);
+  background: rgba(8, 10, 18, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 16px rgba(255, 129, 47, 0.2);
+  transform: translate(var(--pill-x, 0px), var(--pill-y, 0px));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.topbar__links[data-ready] .topbar__pill {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .topbar__links[data-ready] .topbar__pill {
+    /* Cadangan untuk browser tanpa linear(): membal sederhana */
+    transition:
+      transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+      width 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
+      height 0.3s ease,
+      opacity 0.2s ease;
+    /* Pegas elastis untuk browser yang mendukung linear() */
+    transition:
+      transform 0.8s linear(0, 0.1 3%, 0.4 7%, 0.78 12%, 1.03 17%, 1.11 21%, 1.12 25%, 1.07 31%, 1.01 38%, 0.98 45%, 0.99 55%, 1.003 70%, 1),
+      width 0.8s linear(0, 0.1 3%, 0.4 7%, 0.78 12%, 1.03 17%, 1.11 21%, 1.12 25%, 1.07 31%, 1.01 38%, 0.98 45%, 0.99 55%, 1.003 70%, 1),
+      height 0.3s ease,
+      opacity 0.2s ease;
+  }
+}
