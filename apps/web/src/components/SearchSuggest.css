@@ -1,0 +1,184 @@
+.topbar__search {
+  position: relative;
+}
+
+.nk-suggest {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 5;
+  width: min(400px, calc(100vw - 32px));
+  max-height: min(70vh, 480px);
+  padding: 8px;
+  overflow-y: auto;
+  transform-origin: top right;
+  /* Cukup pekat: panel berada di dalam navbar berkaca, jadi blur sendiri tidak bisa diandalkan */
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(14, 16, 28, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 24px 60px rgba(0, 0, 0, 0.55);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 129, 47, 0.5) transparent;
+}
+
+.nk-suggest__list.is-stale {
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+.nk-suggest__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.nk-suggest__item.is-active {
+  background: rgba(255, 129, 47, 0.14);
+  border-color: rgba(255, 129, 47, 0.4);
+}
+
+.nk-suggest__item img,
+.nk-suggest__noimg {
+  flex: none;
+  width: 40px;
+  height: 56px;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 9px;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
+}
+
+.nk-suggest__text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.nk-suggest__title {
+  overflow: hidden;
+  font-size: 0.92rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.nk-suggest__title mark {
+  padding: 0 2px;
+  color: #fff;
+  background: rgba(255, 129, 47, 0.3);
+  border-radius: 4px;
+}
+
+.nk-suggest__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.76rem;
+  color: #b7bac8;
+}
+
+.nk-suggest__tag {
+  padding: 1px 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #ff9a55;
+  background: rgba(255, 129, 47, 0.12);
+  border: 1px solid rgba(255, 129, 47, 0.32);
+  border-radius: 999px;
+}
+
+.nk-suggest__rate {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.nk-suggest__note {
+  margin: 0;
+  padding: 16px 14px;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: #b7bac8;
+}
+
+.nk-suggest__skeletons {
+  display: grid;
+  gap: 8px;
+  padding: 4px;
+}
+
+.nk-suggest__skeleton {
+  height: 72px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
+  background-size: 200% 100%;
+  border-radius: 16px;
+}
+
+@media (max-width: 960px) {
+  .nk-suggest {
+    left: 0;
+    right: 0;
+    width: auto;
+    transform-origin: top center;
+  }
+}
+
+/* Jelly pop: muncul membal seperti agar-agar (hanya bagi yang tidak mematikan animasi) */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes nk-jelly {
+    0%   { opacity: 0; scale: 0.6 0.35; }
+    35%  { opacity: 1; scale: 1.07 0.93; }
+    55%  { scale: 0.96 1.05; }
+    75%  { scale: 1.02 0.99; }
+    100% { opacity: 1; scale: 1 1; }
+  }
+
+  @keyframes nk-jelly-row {
+    0%   { opacity: 0; scale: 0.88 0.7; translate: 0 -8px; }
+    45%  { opacity: 1; scale: 1.04 0.97; translate: 0 0; }
+    70%  { scale: 0.99 1.02; }
+    100% { opacity: 1; scale: 1 1; translate: 0 0; }
+  }
+
+  @keyframes nk-search-jelly {
+    0%   { scale: 1 1; }
+    30%  { scale: 1.07 0.92; }
+    55%  { scale: 0.97 1.04; }
+    78%  { scale: 1.01 0.99; }
+    100% { scale: 1 1; }
+  }
+
+  @keyframes nk-shimmer {
+    from { background-position: 200% 0; }
+    to   { background-position: -200% 0; }
+  }
+
+  .nk-suggest {
+    animation: nk-jelly 0.6s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+  }
+
+  .nk-suggest__item {
+    animation: nk-jelly-row 0.5s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 45ms + 80ms);
+  }
+
+  .nk-suggest__skeleton {
+    animation: nk-shimmer 1.4s linear infinite;
+  }
+
+  .topbar__search:focus-within {
+    animation: nk-search-jelly 0.55s ease;
+  }
+}

@@ -27,3 +27,6 @@ export const getTopAnime = (category, page, signal) =>
 
 export const getAnimeByIds = (ids, signal) =>
   getData(`/anime?ids=${ids.join(",")}`, signal);
+
+export const getSuggestions = (query, signal) =>
+  getData(`/suggest?q=${encodeURIComponent(query)}`, signal);

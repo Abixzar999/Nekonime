@@ -139,4 +139,21 @@ app.get("/api/anime", async (req, res) => {
   }
 });
 
+const SUGGEST_QUERY = `query ($q: String) {
+  Page(page: 1, perPage: 8) {
+    media(type: ANIME, search: $q, sort: SEARCH_MATCH, isAdult: false) { ${MEDIA_FIELDS} }
+  }
+}`;
+
+// Saran judul saat mengetik di kolom cari (anime dan donghua sekaligus)
+app.get("/api/suggest", async (req, res) => {
+  const q = String(req.query.q || "").trim().slice(0, 60);
+  if (q.length < 2) return res.json({ data: [] });
+  try {
+    res.json({ data: await fromAniList(`suggest:${q.toLowerCase()}`, SUGGEST_QUERY, { q }) });
+  } catch (err) {
+    res.status(502).json({ error: "Gagal menghubungi AniList", detail: err.message });
+  }
+});
+
 app.listen(PORT, () => console.log(`NEKONIME API di http://localhost:${PORT}`));

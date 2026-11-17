@@ -37,6 +37,7 @@ function App() {
   const [isWatching, setIsWatching] = useState(false);
   const [selectedEpisode, setSelectedEpisode] = useState(1);
   const seasonAnime = useSeasonAnime(selectedAnime);
+  const [pinnedAnime, setPinnedAnime] = useState([]);
   const [favorites, setFavorites] = useState(() =>
     normalizeFavorites(loadJSON("nekonime-favorites", []))
   );
@@ -62,6 +63,7 @@ function App() {
   const findAnime = (id) =>
     items.find((anime) => anime.id === id) ||
     seasonAnime.find((anime) => anime.id === id) ||
+    pinnedAnime.find((anime) => anime.id === id) ||
     getAnimeById(id);
   const selectedAnimeData = findAnime(selectedAnime);
 
@@ -104,6 +106,17 @@ function App() {
     else setSelectedAnime(id);
   };
 
+  // Buka detail anime yang dipilih dari saran pencarian (judulnya mungkin belum ada di katalog)
+  const openFromSearch = (anime) => {
+    setPinnedAnime((previous) =>
+      previous.some((item) => item.id === anime.id) ? previous : [...previous, anime]
+    );
+    setSearch("");
+    setIsWatching(false);
+    setSelectedEpisode(1);
+    setSelectedAnime(anime.id);
+  };
+
   // Hapus satu anime dari riwayat
   const removeHistoryItem = (animeId) => {
     setWatchHistory((previous) => {
@@ -135,6 +148,7 @@ function App() {
             onNavigate={setActivePage}
             search={search}
             onSearchChange={setSearch}
+            onPickSuggestion={openFromSearch}
           />
 
           <main>
