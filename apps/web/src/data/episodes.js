@@ -42,7 +42,32 @@ export const videoSources = {
   "21856:22": { type: "youtube", id: "CoxFeEKpO-A", credit: "Ani-One Indonesia (kanal resmi)" },
   "21856:23": { type: "youtube", id: "eUTaj3l7MNI", credit: "Ani-One Indonesia (kanal resmi)" },
   "21856:24": { type: "youtube", id: "2TKxgRk4siE", credit: "Ani-One Indonesia (kanal resmi)" },
-  "21856:25": { type: "youtube", id: "3yfCOc9ebdg", credit: "Ani-One Indonesia (kanal resmi)" }
+  "21856:25": { type: "youtube", id: "3yfCOc9ebdg", credit: "Ani-One Indonesia (kanal resmi)" },
+  // AniList 120120, diimpor dari daftar tautan
+  "120120:1": { type: "youtube", id: "NuGSr9noWoc", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:2": { type: "youtube", id: "udOxNLXftyU", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:3": { type: "youtube", id: "AfqcAhzpUdo", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:4": { type: "youtube", id: "HJX8DSNaA24", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:5": { type: "youtube", id: "arbIRFuW6vM", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:6": { type: "youtube", id: "cb0wQI-jvIE", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:7": { type: "youtube", id: "x1go80VlZf8", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:8": { type: "youtube", id: "gIPFvvnjsNM", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:9": { type: "youtube", id: "0hcBkrnpwu4", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:10": { type: "youtube", id: "pf_StalkSwM", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:11": { type: "youtube", id: "eJjjL7p34Ys", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:12": { type: "youtube", id: "QVxn6rq-2Zo", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:13": { type: "youtube", id: "AFLETAohnRE", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:14": { type: "youtube", id: "pPG6cZ0ADEU", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:15": { type: "youtube", id: "joM2TpAfuDI", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:16": { type: "youtube", id: "vc9VEmKRObQ", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:17": { type: "youtube", id: "E_HWulLqHuY", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:18": { type: "youtube", id: "2oWaa0UwLb4", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:19": { type: "youtube", id: "AA0rOp3_ytY", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:20": { type: "youtube", id: "RKh0E79QFoA", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:21": { type: "youtube", id: "-JoI5nUAgGA", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:22": { type: "youtube", id: "hVPbsKePi48", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:23": { type: "youtube", id: "fal1iP2PNxU", credit: "NAMA KANAL (kanal resmi)" },
+  "120120:24": { type: "youtube", id: "fM1xZlEiyk8", credit: "NAMA KANAL (kanal resmi)" }
 };
 
 // Mengembalikan sumber video, atau null jika belum ada.
