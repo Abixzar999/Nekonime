@@ -1,0 +1,116 @@
+/* Latar utama: bidang cahaya lembut di atas dasar gelap (warna dasar ada di <body>) */
+.nk-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 48% at 86% 4%, rgba(255, 129, 47, 0.22), transparent 72%),
+    radial-gradient(ellipse 52% 56% at 4% 42%, rgba(38, 112, 176, 0.2), transparent 72%),
+    radial-gradient(ellipse 46% 40% at 28% 0%, rgba(24, 168, 164, 0.1), transparent 72%),
+    radial-gradient(ellipse 54% 44% at 62% 104%, rgba(255, 160, 70, 0.13), transparent 72%);
+}
+
+/* Lapisan aurora kedua yang lebih besar (bergerak pelan hanya di layar lebar) */
+.nk-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  background:
+    radial-gradient(ellipse 34% 28% at 22% 30%, rgba(255, 129, 47, 0.1), transparent 70%),
+    radial-gradient(ellipse 30% 34% at 78% 70%, rgba(38, 112, 176, 0.12), transparent 70%);
+}
+
+/* Butiran halus supaya latar tidak datar dan tidak muncul garis gradasi */
+.nk-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+}
+
+/* Sorot kursor (hanya perangkat dengan mouse) */
+.nk-backdrop__glow {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nk-backdrop__glow {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 640px;
+    height: 640px;
+    margin: -320px 0 0 -320px;
+    translate: var(--mx, -999px) var(--my, -999px);
+    background: radial-gradient(closest-side, rgba(255, 150, 80, 0.13), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .nk-backdrop.has-pointer .nk-backdrop__glow {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 769px) {
+  .nk-backdrop::before {
+    will-change: transform;
+    animation: nk-aurora 48s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes nk-aurora {
+  from { transform: translate(-3%, -2%) rotate(0deg) scale(1); }
+  to   { transform: translate(3%, 3%) rotate(8deg) scale(1.12); }
+}
+
+/* Spotlight saat layar ditekan: cahaya hangat melebar dari titik tekan, di atas halaman */
+.nk-spot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  width: 620px;
+  height: 620px;
+  margin: -310px 0 0 -310px;
+  pointer-events: none;
+  translate: var(--px, -999px) var(--py, -999px);
+  scale: 0.35;
+  opacity: 0;
+  visibility: hidden;
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 214, 170, 0.34),
+    rgba(255, 140, 60, 0.14) 45%,
+    transparent 72%
+  );
+  mix-blend-mode: screen;
+  transition: scale 0.6s ease, opacity 0.6s ease, visibility 0s linear 0.6s;
+}
+
+.nk-spot.is-pressed {
+  scale: 1;
+  opacity: 1;
+  visibility: visible;
+  transition: scale 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2), opacity 0.2s ease, visibility 0s;
+}
+
+@media (hover: none), (max-width: 700px) {
+  .nk-spot {
+    width: 420px;
+    height: 420px;
+    margin: -210px 0 0 -210px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nk-spot,
+  .nk-spot.is-pressed {
+    scale: 1;
+    transition: opacity 0.2s ease, visibility 0s;
+  }
+}

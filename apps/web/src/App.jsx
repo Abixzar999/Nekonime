@@ -16,6 +16,7 @@ import CatalogNotice from "./components/CatalogNotice";
 import VideoPlayer from "./components/VideoPlayer";
 import HistoryRow from "./components/HistoryRow";
 import Navbar from "./components/Navbar";
+import Backdrop from "./components/Backdrop";
 import HeroCollage from "./components/HeroCollage";
 import Icon from "./components/Icon";
 import OfficialLinks from "./components/OfficialLinks";
@@ -126,6 +127,7 @@ function App() {
 
   return (
     <div className="app">
+      <Backdrop />
       {!isWatching && !selectedAnime && (
         <>
           <Navbar

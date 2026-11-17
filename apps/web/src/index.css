@@ -1893,3 +1893,12 @@ body {
     display: none;
   }
 }
+
+/* ===== 23a: Latar sekarang ada di komponen Backdrop ===== */
+.app {
+  background: transparent;
+}
+
+.app .video-page {
+  background: transparent;
+}
