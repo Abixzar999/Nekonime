@@ -38,7 +38,7 @@ function Navbar({ activePage, onNavigate, search, onSearchChange, onPickSuggesti
   const listId = useId();
 
   const query = search.trim();
-  const { items, status } = useSuggestions(query, suggestOpen);
+  const { items, status, matched } = useSuggestions(query, suggestOpen);
   const showPanel = suggestOpen && query.length >= 2;
   const active = showPanel ? Math.min(activeIndex, items.length - 1) : -1;
 
@@ -250,6 +250,12 @@ function Navbar({ activePage, onNavigate, search, onSearchChange, onPickSuggesti
                 </p>
               )}
 
+              {status === "done" && items.length > 0 && matched && matched.toLowerCase() !== query.toLowerCase() && (
+                <p className="nk-suggest__note nk-suggest__note--approx" role="status">
+                  Tidak ada yang persis “{query}”. Judul yang mengandung “{matched}”:
+                </p>
+              )}
+
               {items.length > 0 && (
                 <div className={`nk-suggest__list${status === "loading" ? " is-stale" : ""}`}>
                   {items.map((item, index) => (
@@ -269,7 +275,7 @@ function Navbar({ activePage, onNavigate, search, onSearchChange, onPickSuggesti
                         <span className="nk-suggest__noimg" />
                       )}
                       <span className="nk-suggest__text">
-                        <span className="nk-suggest__title">{highlight(item.title, query)}</span>
+                        <span className="nk-suggest__title">{highlight(item.title, matched || query)}</span>
                         <span className="nk-suggest__meta">
                           <span className="nk-suggest__tag">{item.categoryLabel}</span>
                           {item.year !== "-" && <span>{item.year}</span>}

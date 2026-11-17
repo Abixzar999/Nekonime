@@ -182,3 +182,9 @@
     animation: nk-search-jelly 0.55s ease;
   }
 }
+
+.nk-suggest__note--approx {
+  padding: 8px 12px 6px;
+  font-size: 0.78rem;
+  color: #ff9a55;
+}

@@ -6,10 +6,11 @@ const DELAY_MS = 250;
 const TIMEOUT_MS = 8000;
 
 // Saran judul untuk kolom cari. Permintaan ditahan sampai pengguna berhenti mengetik.
-// Mengembalikan { items, status }: status "idle" | "loading" | "done" | "error".
+// Mengembalikan { items, status, matched }: status "idle" | "loading" | "done" | "error".
+// matched = kata yang akhirnya cocok (bisa lebih pendek dari yang diketik).
 export function useSuggestions(query, enabled) {
   const ready = enabled && query.length >= MIN_CHARS;
-  const [state, setState] = useState({ query: "", items: [], status: "idle" });
+  const [state, setState] = useState({ query: "", items: [], matched: "", status: "idle" });
 
   useEffect(() => {
     if (!ready) return undefined;
@@ -19,10 +20,10 @@ export function useSuggestions(query, enabled) {
     const timer = setTimeout(async () => {
       const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
       try {
-        const items = await getSuggestions(query, controller.signal);
-        if (!cancelled) setState({ query, items, status: "done" });
+        const { items, matched } = await getSuggestions(query, controller.signal);
+        if (!cancelled) setState({ query, items, matched, status: "done" });
       } catch {
-        if (!cancelled) setState({ query, items: [], status: "error" });
+        if (!cancelled) setState({ query, items: [], matched: "", status: "error" });
       } finally {
         clearTimeout(timeout);
       }
@@ -35,8 +36,8 @@ export function useSuggestions(query, enabled) {
     };
   }, [query, ready]);
 
-  if (!ready) return { items: [], status: "idle" };
+  if (!ready) return { items: [], status: "idle", matched: "" };
   // Selama menunggu hasil baru, hasil lama tetap tampil (diredupkan oleh CSS)
-  if (state.query !== query) return { items: state.items, status: "loading" };
-  return { items: state.items, status: state.status };
+  if (state.query !== query) return { items: state.items, status: "loading", matched: state.matched };
+  return { items: state.items, status: state.status, matched: state.matched };
 }

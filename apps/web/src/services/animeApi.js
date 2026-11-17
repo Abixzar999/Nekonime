@@ -28,5 +28,10 @@ export const getTopAnime = (category, page, signal) =>
 export const getAnimeByIds = (ids, signal) =>
   getData(`/anime?ids=${ids.join(",")}`, signal);
 
-export const getSuggestions = (query, signal) =>
-  getData(`/suggest?q=${encodeURIComponent(query)}`, signal);
+// Mengembalikan { items, matched }: matched = kata yang akhirnya cocok (bisa lebih pendek dari ketikan)
+export async function getSuggestions(query, signal) {
+  const response = await fetch(`${BASE_URL}/suggest?q=${encodeURIComponent(query)}`, { signal });
+  if (!response.ok) throw new Error(`Backend error: ${response.status}`);
+  const json = await response.json();
+  return { items: json.data || [], matched: json.matched || query };
+}

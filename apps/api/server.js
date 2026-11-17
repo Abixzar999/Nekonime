@@ -140,17 +140,48 @@ app.get("/api/anime", async (req, res) => {
 });
 
 const SUGGEST_QUERY = `query ($q: String) {
-  Page(page: 1, perPage: 8) {
-    media(type: ANIME, search: $q, sort: SEARCH_MATCH, isAdult: false) { ${MEDIA_FIELDS} }
+  Page(page: 1, perPage: 16) {
+    media(type: ANIME, search: $q, sort: POPULARITY_DESC, isAdult: false) { ${MEDIA_FIELDS} }
   }
 }`;
+
+// Cadangan saat tidak ada hasil: potong 2 huruf terakhir, lalu buang kata terakhir.
+function suggestFallbacks(q) {
+  const words = q.split(/\s+/).filter(Boolean);
+  const last = words[words.length - 1] || "";
+  const out = [];
+  if (last.length >= 6) out.push([...words.slice(0, -1), last.slice(0, -2)].join(" "));
+  if (words.length > 1) out.push(words.slice(0, -1).join(" "));
+  return out.filter((x) => x.length >= 3).slice(0, 2);
+}
+
+// Lipat musim dari seri yang sama (Season 2, Part 2, dst.) supaya tidak memakai banyak slot.
+const SEASON_MARK = /(season\s*\d+|\d+(st|nd|rd|th)\s+season|part\s*\d+|cour\s*\d+|final season)/i;
+function collapseSeasons(list) {
+  const titles = list.map((a) => a.title.toLowerCase());
+  return list.filter((a, i) => {
+    if (!SEASON_MARK.test(a.title)) return true;
+    return !titles.some((t, j) => j !== i && t.length < titles[i].length && titles[i].startsWith(t));
+  });
+}
 
 // Saran judul saat mengetik di kolom cari (anime dan donghua sekaligus)
 app.get("/api/suggest", async (req, res) => {
   const q = String(req.query.q || "").trim().slice(0, 60);
-  if (q.length < 2) return res.json({ data: [] });
+  if (q.length < 2) return res.json({ data: [], matched: q });
   try {
-    res.json({ data: await fromAniList(`suggest:${q.toLowerCase()}`, SUGGEST_QUERY, { q }) });
+    const first = collapseSeasons(await fromAniList(`suggest:${q.toLowerCase()}`, SUGGEST_QUERY, { q }));
+    if (first.length) return res.json({ data: first.slice(0, 8), matched: q });
+
+    for (const cand of suggestFallbacks(q)) {
+      try {
+        const list = collapseSeasons(await fromAniList(`suggest:${cand.toLowerCase()}`, SUGGEST_QUERY, { q: cand }));
+        if (list.length) return res.json({ data: list.slice(0, 8), matched: cand });
+      } catch {
+        break; // cadangan gagal (misalnya batas permintaan): tampilkan "tidak ada hasil"
+      }
+    }
+    res.json({ data: [], matched: q });
   } catch (err) {
     res.status(502).json({ error: "Gagal menghubungi AniList", detail: err.message });
   }
