@@ -1,0 +1,84 @@
+.nk-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  width: 90%;
+  max-width: 1300px;
+  margin: 56px auto 28px;
+  padding: 18px 4px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nk-footer__text {
+  max-width: 760px;
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #8b8ea0;
+}
+
+.nk-footer__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: 0.82rem;
+  color: #c9ccd8;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.nk-footer__link:hover {
+  color: #ff812f;
+  border-color: rgba(255, 129, 47, 0.55);
+}
+
+.nk-footer__link:focus-visible {
+  outline: 2px solid #ff812f;
+  outline-offset: 3px;
+}
+
+/* Dialog disclaimer lebih lebar dan bisa digulir */
+.nk-dialog--wide {
+  width: min(92vw, 640px);
+}
+
+.nk-dialog--wide .nk-dialog__box {
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 129, 47, 0.5) transparent;
+}
+
+.nk-disclaimer {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.nk-disclaimer h3 {
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+  color: #ff9a55;
+}
+
+.nk-disclaimer p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: #c9ccd8;
+}
+
+.nk-disclaimer a {
+  color: #ff812f;
+}
+
+html.cinema-mode .nk-footer {
+  opacity: 0.25;
+}
