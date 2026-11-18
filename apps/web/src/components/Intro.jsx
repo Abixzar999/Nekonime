@@ -18,12 +18,12 @@ function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-// Intro saat masuk: maskot, logo, dan keluar dengan liquid wipe.
+// Intro saat masuk: karakter chibi sebagai bintang, logo halus, keluar dengan liquid wipe.
 function Intro() {
   const [phase, setPhase] = useState(() => (wantsIntro() ? "show" : "gone"));
-  // Durasi (ms): lama tampil dan lama keluar. Ubah angka "show" untuk memperpanjang atau memperpendek.
+  // Durasi (ms): lama tampil dan lama keluar. Ubah "show" untuk memperpanjang atau memperpendek.
   const [timing] = useState(() =>
-    prefersReducedMotion() ? { show: 900, leave: 300 } : { show: 3200, leave: 850 }
+    prefersReducedMotion() ? { show: 900, leave: 300 } : { show: 3400, leave: 850 }
   );
   const skipRef = useRef(null);
   const active = phase !== "gone";
@@ -88,11 +88,36 @@ function Intro() {
       onClick={skip}
     >
       <div className="nk-intro__aurora" aria-hidden="true" />
+      <img
+        className="nk-intro__ghost"
+        src="/images/nekonime-mascot.png"
+        alt=""
+        aria-hidden="true"
+        draggable="false"
+      />
 
       <div className="nk-intro__stage">
-        <div className="nk-intro__mascot" aria-hidden="true">
-          <img src="/images/nekonime-mascot.png" alt="" draggable="false" />
+        <div className="nk-intro__hero" aria-hidden="true">
+          <span className="nk-intro__plate" />
+          <span className="nk-intro__shadow" />
+          <div className="nk-intro__chibi">
+            <div className="nk-intro__body">
+              <img
+                className="nk-intro__open"
+                src="/images/intro/chibi-depan.webp"
+                alt=""
+                draggable="false"
+              />
+              <img
+                className="nk-intro__blink"
+                src="/images/intro/chibi-depan-kedip.webp"
+                alt=""
+                draggable="false"
+              />
+            </div>
+          </div>
         </div>
+
         <div className="nk-intro__logo">
           <img src="/images/nekonime-logo.png" alt="NEKONIME" draggable="false" />
         </div>
@@ -100,20 +125,6 @@ function Intro() {
         <div className="nk-intro__bar" aria-hidden="true">
           <span />
         </div>
-      </div>
-
-      <div className="nk-intro__friend" aria-hidden="true">
-        <span className="nk-intro__plate" />
-        <img src="/images/intro/chibi-depan.png" alt="" draggable="false" />
-      </div>
-
-      <div className="nk-intro__sleeper" aria-hidden="true">
-        <span className="nk-intro__zzz">
-          <i>z</i>
-          <i>z</i>
-          <i>z</i>
-        </span>
-        <img src="/images/intro/chibi-tidur.png" alt="" draggable="false" />
       </div>
 
       <button
