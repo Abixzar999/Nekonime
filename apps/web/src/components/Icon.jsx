@@ -7,6 +7,8 @@ const ICONS = {
       <path d="M12 8h.01" />
     </>
   ),
+  "chevron-up": <path d="m18 15-6-6-6 6" />,
+  "chevron-down": <path d="m6 9 6 6 6-6" />,
   video: (
     <>
       <polygon points="23 7 16 12 23 17 23 7" />

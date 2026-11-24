@@ -60,13 +60,17 @@ export async function getStreams({ animeId, episode, title }) {
 }
 
 // Daftar episode yang punya sumber dari provider aktif.
-export function listEpisodes(animeId) {
+export async function listEpisodes(animeId, title) {
   const byEpisode = new Map();
 
   for (const provider of getActiveProviders()) {
     if (typeof provider.listEpisodes !== "function") continue;
-    for (const item of provider.listEpisodes({ animeId })) {
-      if (!byEpisode.has(item.episode)) byEpisode.set(item.episode, item);
+    try {
+      for (const item of await provider.listEpisodes({ animeId, title })) {
+        if (!byEpisode.has(item.episode)) byEpisode.set(item.episode, item);
+      }
+    } catch {
+      // Provider failed, continue with others
     }
   }
 

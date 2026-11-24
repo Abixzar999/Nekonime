@@ -1,8 +1,9 @@
 import localYouTube from "./providers/localYouTube.js";
+import anioneasia from "./providers/anioneasia.js";
 
 // Semua provider yang dikenal aplikasi. Provider yang legalitasnya belum
 // terverifikasi tidak boleh didaftarkan di sini.
-const ALL_PROVIDERS = [localYouTube];
+const ALL_PROVIDERS = [localYouTube, anioneasia];
 
 // Gate tunggal: provider hanya aktif jika diaktifkan DAN lisensinya terverifikasi.
 export function getActiveProviders() {

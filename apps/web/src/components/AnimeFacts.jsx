@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Icon from "./Icon";
+import { AnioneasiaBadge } from "./AnioneasiaBadge";
 
 const STATUS_LABELS = {
   FINISHED: "Tamat",
@@ -57,6 +58,9 @@ function AnimeFacts({ anime }) {
           {expanded ? "Tampilkan lebih sedikit" : "Selengkapnya"}
         </button>
       )}
+
+      {/* Badge AniOneAsia - muncul jika anime ini punya video di channel */}
+      <AnioneasiaBadge animeTitle={anime.title} animeId={anime.id} />
     </div>
   );
 }

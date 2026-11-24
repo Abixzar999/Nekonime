@@ -254,13 +254,14 @@ const parseEpisode = (value) => {
 };
 
 // Episode yang punya sumber dari provider aktif.
-app.get("/api/episodes/:animeId", (req, res) => {
+app.get("/api/episodes/:animeId", async (req, res) => {
   const { animeId } = req.params;
   if (!isNumericId(animeId)) {
     return res.status(400).json({ error: "ID anime tidak valid." });
   }
 
-  const episodes = listEpisodes(animeId);
+  const title = String(req.query.title || "").trim().slice(0, 200) || undefined;
+  const episodes = await listEpisodes(animeId, title);
   res.json({ data: { animeId, total: episodes.length, episodes } });
 });
 

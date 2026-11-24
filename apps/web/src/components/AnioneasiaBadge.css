@@ -1,0 +1,116 @@
+.anioneasia-badge {
+  margin-top: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  overflow: hidden;
+}
+
+.anioneasia-badge__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: none;
+  border: none;
+  color: var(--fg);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--fast);
+}
+
+.anioneasia-badge__trigger:hover {
+  background: var(--accent-alpha);
+}
+
+.anioneasia-badge__trigger Icon:first-child {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.anioneasia-badge__trigger Icon:last-child {
+  margin-left: auto;
+  color: var(--muted);
+  transition: transform var(--fast);
+}
+
+.anioneasia-badge__trigger[aria-expanded="true"] Icon:last-child {
+  transform: rotate(180deg);
+}
+
+.anioneasia-badge__episodes {
+  display: grid;
+  gap: 2px;
+  padding: var(--space-2) var(--space-4) var(--space-3);
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  animation: slideDown var(--fast) ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.anioneasia-badge__ep {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--fg);
+  font-size: 0.85rem;
+  transition: background var(--fast), border-color var(--fast);
+}
+
+.anioneasia-badge__ep:hover {
+  background: var(--accent-alpha);
+  border-color: var(--accent);
+}
+
+.anioneasia-badge__ep-num {
+  min-width: 50px;
+  font-weight: 600;
+  color: var(--accent);
+  font-size: 0.8rem;
+}
+
+.anioneasia-badge__ep-title {
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.anioneasia-badge__more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: var(--radius);
+  transition: background var(--fast);
+}
+
+.anioneasia-badge__more:hover {
+  background: var(--accent-alpha);
+}
