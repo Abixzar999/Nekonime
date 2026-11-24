@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { getStreams, listEpisodes } from "./streaming/index.js";
 import { listProviders } from "./streaming/registry.js";
+import { listAnioneasiaVideos, getAnioneasiaVideo, getAnioneasiaStats } from "./anioneasia.js";
 
 const PORT = process.env.PORT || 3002;
 const ANILIST_URL = "https://graphql.anilist.co";
@@ -302,6 +303,52 @@ app.get("/api/episodes/:animeId/:episode/streams", async (req, res) => {
     res.json({ data: { animeId, episode, sources } });
   } catch (err) {
     res.status(502).json({ error: "Gagal mengambil sumber video", detail: err.message });
+  }
+});
+
+// ============================================
+// ANIONEASIA (Channel YouTube metadata)
+// ============================================
+
+// List video dengan filter: q, page, limit, dateFrom, dateTo, minViews
+app.get("/api/anioneasia/videos", (req, res) => {
+  try {
+    const { q = "", page = 1, limit = 20, dateFrom, dateTo, minViews = 0 } = req.query;
+    const result = listAnioneasiaVideos({
+      q: String(q).trim(),
+      page: Math.max(1, Number.parseInt(page, 10) || 1),
+      limit: Math.min(100, Math.max(1, Number.parseInt(limit, 10) || 20)),
+      dateFrom: dateFrom || undefined,
+      dateTo: dateTo || undefined,
+      minViews: Math.max(0, Number.parseInt(minViews, 10) || 0),
+    });
+    if (result.error) return res.status(503).json({ error: result.error });
+    res.json({ data: result.data, pagination: { page: result.page, limit: result.limit, total: result.total, totalPages: result.totalPages } });
+  } catch (err) {
+    res.status(500).json({ error: "Gagal mengambil data AniOneAsia", detail: err.message });
+  }
+});
+
+// Detail satu video
+app.get("/api/anioneasia/videos/:videoId", (req, res) => {
+  try {
+    const { videoId } = req.params;
+    const result = getAnioneasiaVideo(videoId);
+    if (result.error) return res.status(result.error === "Not found" ? 404 : 503).json({ error: result.error });
+    res.json({ data: result.data });
+  } catch (err) {
+    res.status(500).json({ error: "Gagal mengambil detail video", detail: err.message });
+  }
+});
+
+// Statistik channel
+app.get("/api/anioneasia/stats", (req, res) => {
+  try {
+    const result = getAnioneasiaStats();
+    if (result.error) return res.status(503).json({ error: result.error });
+    res.json({ data: result });
+  } catch (err) {
+    res.status(500).json({ error: "Gagal mengambil statistik", detail: err.message });
   }
 });
 
