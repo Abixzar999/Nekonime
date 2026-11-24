@@ -22,6 +22,7 @@ import Icon from "./components/Icon";
 import OfficialLinks from "./components/OfficialLinks";
 import SeasonPicker from "./components/SeasonPicker";
 import AnimeFacts from "./components/AnimeFacts";
+import AnioneasiaPage from "./components/AnioneasiaPage";
 import { useSeasonAnime } from "./hooks/useSeasonAnime";
 import { getSeries } from "./data/series";
 import { getSourceStatus, getVideoSource, hasPlayableSource, playableAnimeIds } from "./data/episodes";
@@ -426,7 +427,11 @@ function App() {
               </>
             )}
 
-            {activePage !== "home" && (
+            {activePage === "anioneasia" && (
+            <AnioneasiaPage />
+          )}
+
+          {activePage !== "home" && activePage !== "anioneasia" && (
             <section className="catalog">
               <p className="eyebrow">
                 {activePage === "favorites" ? "YOUR COLLECTION" : "DISCOVER"}
@@ -447,7 +452,9 @@ function App() {
                     ? "Temukan berbagai cerita anime favoritmu."
                     : activePage === "donghua"
                       ? "Jelajahi koleksi animasi dari Tiongkok."
-                      : "Koleksi cerita menarik menantimu."}
+                      : activePage === "watchable"
+                        ? "Anime yang punya sumber video resmi terverifikasi."
+                        : "Koleksi cerita menarik menantimu."}
               </p>
 
               <CatalogNotice loading={activePage === "watchable" ? watchableLoading : loading} error={activePage === "watchable" ? null : error} />

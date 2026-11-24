@@ -7,6 +7,12 @@ const ICONS = {
       <path d="M12 8h.01" />
     </>
   ),
+  video: (
+    <>
+      <polygon points="23 7 16 12 23 17 23 7" />
+      <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+    </>
+  ),
   "chevron-down": <path d="m6 9 6 6 6-6" />,
   film: (
     <>
