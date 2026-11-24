@@ -13,6 +13,16 @@ export const series = [
       { label: "Season 7", id: 163139 },
       { label: "Final Season", id: 182896 }
     ]
+  },
+  {
+    title: "The Daily Life of the Immortal King",
+    seasons: [
+      { label: "Season 1", id: 114121 },
+      { label: "Season 2", id: 126357 },
+      { label: "Season 3", id: 141852 },
+      { label: "Season 4", id: 156110 },
+      { label: "Season 5", id: 185857 }
+    ]
   }
 ];
 

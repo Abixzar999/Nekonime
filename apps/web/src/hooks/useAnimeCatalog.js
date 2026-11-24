@@ -1,20 +1,22 @@
 import { useState, useEffect } from "react";
 import { getTopAnime, searchAnime } from "../services/animeApi";
-import { animeList as localAnime } from "../data/anime";
 
 const DEBOUNCE_MS = 500;
 const REQUEST_TIMEOUT_MS = 8000;
 const PAGE_SIZE = 12;
 
-// Mengurus katalog: loading, error, debounce, fallback lokal, dan "muat lebih banyak".
+// Mengurus katalog: loading, error, debounce, dan "muat lebih banyak".
+// Katalog tidak pernah diisi data contoh: bila API gagal, tampilkan pesan jujur.
 // page: "home", "anime", "donghua", dst. Hanya anime/donghua yang menyaring kategori.
-export function useAnimeCatalog(query, activePage) {
+export function useAnimeCatalog(query, activePage, filters) {
   const category = activePage === "anime" || activePage === "donghua" ? activePage : "";
   const trimmed = query.trim();
-  const key = `${category}|${trimmed}`;
+  const f = filters || {};
+  const filterKey = `${f.genre || ""}|${f.year || ""}|${f.status || ""}|${f.sort || ""}`;
+  const key = `${category}|${trimmed}|${filterKey}`;
 
   const [state, setState] = useState({
-    items: localAnime,
+    items: [],
     loading: true,
     loadingMore: false,
     error: null,
@@ -47,8 +49,8 @@ export function useAnimeCatalog(query, activePage) {
 
       try {
         const batch = trimmed
-          ? await searchAnime(trimmed, category, page, controller.signal)
-          : await getTopAnime(category, page, controller.signal);
+          ? await searchAnime(trimmed, category, page, f, controller.signal)
+          : await getTopAnime(category, page, f, controller.signal);
         if (cancelled) return;
         setState((prev) => {
           const seen = new Set(page === 1 ? [] : prev.items.map((a) => a.id));
@@ -72,17 +74,11 @@ export function useAnimeCatalog(query, activePage) {
           }));
           return;
         }
-        const lower = trimmed.toLowerCase();
-        const items = localAnime.filter(
-          (a) =>
-            (!category || a.category === category) &&
-            `${a.title} ${a.genre}`.toLowerCase().includes(lower)
-        );
         setState({
-          items,
+          items: [],
           loading: false,
           loadingMore: false,
-          error: "Tidak bisa terhubung ke server anime. Menampilkan data contoh.",
+          error: "Tidak bisa terhubung ke server anime. Coba lagi beberapa saat lagi.",
           hasMore: false
         });
       } finally {
@@ -95,7 +91,8 @@ export function useAnimeCatalog(query, activePage) {
       clearTimeout(timerId);
       controller.abort();
     };
-  }, [trimmed, category, page]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trimmed, category, page, filterKey]);
 
   return { ...state, loadMore };
 }

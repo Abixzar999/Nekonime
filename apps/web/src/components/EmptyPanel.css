@@ -1,0 +1,203 @@
+.app .nk-empty {
+  position: relative;
+  width: min(100%, 560px);
+  margin: 96px auto 24px;
+  padding: 118px 32px 34px;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025)),
+    radial-gradient(ellipse at 50% 0%, rgba(255, 129, 47, 0.16), transparent 70%),
+    rgba(12, 14, 26, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 24px 60px rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+  backdrop-filter: blur(8px) saturate(150%);
+}
+
+/* Karakter menonjol keluar dari tepi atas kartu */
+.nk-empty__char {
+  position: absolute;
+  left: 50%;
+  top: -88px;
+  width: 190px;
+  translate: -50% 0;
+  pointer-events: none;
+}
+
+.nk-empty--search .nk-empty__char {
+  width: 160px;
+  top: -92px;
+}
+
+.nk-empty__char img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: 50% 100%;
+  filter:
+    drop-shadow(0 0 1.5px rgba(255, 190, 130, 0.95))
+    drop-shadow(0 0 16px rgba(255, 129, 47, 0.38))
+    drop-shadow(0 12px 18px rgba(0, 0, 0, 0.5));
+}
+
+.nk-empty__zzz {
+  position: absolute;
+  right: 4%;
+  top: -6%;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  font-weight: 800;
+  color: #ffb070;
+  text-shadow: 0 0 12px rgba(255, 129, 47, 0.7);
+}
+
+.nk-empty__zzz i {
+  font-style: normal;
+  opacity: 0.95;
+}
+
+.nk-empty__zzz i:nth-child(1) { font-size: 0.9rem; }
+.nk-empty__zzz i:nth-child(2) { font-size: 1.15rem; }
+.nk-empty__zzz i:nth-child(3) { font-size: 1.45rem; }
+
+.nk-empty__ask {
+  position: absolute;
+  right: 2%;
+  top: -4%;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffb070;
+  text-shadow: 0 0 14px rgba(255, 129, 47, 0.7);
+}
+
+.app .nk-empty .nk-empty__title {
+  margin: 0 0 10px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.app .nk-empty .nk-empty__text {
+  margin: 0 auto 24px;
+  max-width: 400px;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #c9ccd8;
+}
+
+.nk-empty__heart {
+  display: inline-flex;
+  vertical-align: -2px;
+  color: #ff812f;
+}
+
+.app .nk-empty .nk-empty__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 26px;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(120, 40, 0, 0.4);
+  background: linear-gradient(180deg, rgba(255, 166, 98, 0.92), rgba(255, 129, 47, 0.82));
+  border: 1px solid rgba(255, 190, 140, 0.35);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -8px 18px rgba(200, 80, 10, 0.25),
+    0 10px 30px rgba(255, 129, 47, 0.3);
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.app .nk-empty .nk-empty__cta:hover {
+  filter: brightness(1.08);
+}
+
+.app .nk-empty .nk-empty__cta:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes nk-empty-breathe {
+    0%, 100% { scale: 1 1; }
+    50%      { scale: 1.03 0.97; }
+  }
+
+  @keyframes nk-empty-sway {
+    0%, 100% { rotate: -2deg; }
+    50%      { rotate: 2deg; }
+  }
+
+  @keyframes nk-empty-zzz {
+    0%   { opacity: 0; translate: 0 8px; }
+    30%  { opacity: 1; }
+    100% { opacity: 0; translate: 14px -22px; }
+  }
+
+  @keyframes nk-empty-ask {
+    0%, 100% { translate: 0 0; rotate: -8deg; }
+    50%      { translate: 0 -8px; rotate: 8deg; }
+  }
+
+  .app .nk-empty {
+    animation: nk-fade-up 0.5s ease both;
+  }
+
+  .nk-empty--fav .nk-empty__char img {
+    animation: nk-empty-breathe 4.2s ease-in-out infinite;
+  }
+
+  .nk-empty--search .nk-empty__char img {
+    animation: nk-empty-sway 3.4s ease-in-out infinite;
+  }
+
+  .nk-empty__zzz i {
+    opacity: 0;
+    animation: nk-empty-zzz 2.6s ease-in-out infinite;
+  }
+
+  .nk-empty__zzz i:nth-child(2) { animation-delay: 0.35s; }
+  .nk-empty__zzz i:nth-child(3) { animation-delay: 0.7s; }
+
+  .nk-empty__ask {
+    animation: nk-empty-ask 2.4s ease-in-out infinite;
+  }
+}
+
+@media (max-width: 700px) {
+  .app .nk-empty {
+    margin-top: 84px;
+    padding: 104px 22px 28px;
+    border-radius: 24px;
+  }
+
+  .nk-empty__char {
+    width: 160px;
+    top: -76px;
+  }
+
+  .nk-empty--search .nk-empty__char {
+    width: 138px;
+    top: -80px;
+  }
+}
+
+@media (hover: none), (max-width: 700px), (prefers-reduced-transparency: reduce) {
+  .app .nk-empty {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(255, 129, 47, 0.14), transparent 70%),
+      rgba(14, 16, 28, 0.82);
+  }
+}

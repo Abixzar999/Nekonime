@@ -9,6 +9,7 @@ const LINKS = [
   { page: "home", label: "Beranda", icon: "home" },
   { page: "anime", label: "Anime", icon: "tv" },
   { page: "donghua", label: "Donghua", icon: "sparkles" },
+  { page: "watchable", label: "Bisa Ditonton", icon: "play" },
   { page: "favorites", label: "Daftar Saya", icon: "heart" }
 ];
 

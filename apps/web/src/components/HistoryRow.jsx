@@ -69,7 +69,12 @@ function HistoryRow({ history, onWatch, onRemove, onClear }) {
       <div className="nk-hist__head">
         <div>
           <p className="eyebrow">YOUR HISTORY</p>
-          <h2>Lanjutkan Menonton</h2>
+          <h2>
+            Lanjutkan Menonton
+            <span className="nk-hist__count" aria-label={`${history.length} anime`}>
+              {history.length}
+            </span>
+          </h2>
         </div>
       </div>
       <p className="nk-hist__hint">Tekan lama, klik kanan, atau tekan Delete pada sebuah riwayat untuk opsi hapus.</p>
@@ -101,6 +106,7 @@ function HistoryRow({ history, onWatch, onRemove, onClear }) {
                 src={entry.poster || `/images/anime/anime-${entry.animeId}.jpeg`}
                 alt=""
                 loading="lazy"
+                decoding="async"
                 draggable="false"
               />
               <span className="nk-hist__text">

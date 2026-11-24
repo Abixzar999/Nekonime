@@ -4,7 +4,7 @@
 set -u
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-API_PORT=3001
+API_PORT=3002
 
 # Jangan menyalakan ulang kalau port backend sudah dipakai proses lain.
 if ss -ltn "sport = :${API_PORT}" 2>/dev/null | grep -q LISTEN; then

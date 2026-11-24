@@ -87,8 +87,8 @@
 
 .nk-hist__open img {
   flex: none;
-  width: 46px;
-  height: 64px;
+  width: 52px;
+  height: 72px;
   object-fit: cover;
   border-radius: 10px;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
@@ -220,9 +220,10 @@
 .nk-hist__bar {
   display: block;
   width: 100%;
-  height: 4px;
+  height: 6px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 999px;
 }
 
@@ -231,7 +232,8 @@
   height: 100%;
   background: linear-gradient(90deg, #ff812f, #ff9b52);
   border-radius: inherit;
-  box-shadow: 0 0 8px rgba(255, 129, 47, 0.6);
+  box-shadow: 0 0 8px rgba(255, 129, 47, 0.5);
+  transition: width 0.4s ease;
 }
 
 /* ===== 21a: Durasi dan progres ===== */
@@ -251,9 +253,10 @@
 .nk-hist__bar {
   display: block;
   width: 100%;
-  height: 4px;
+  height: 6px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 999px;
 }
 
@@ -262,7 +265,8 @@
   height: 100%;
   background: linear-gradient(90deg, #ff812f, #ff9b52);
   border-radius: inherit;
-  box-shadow: 0 0 8px rgba(255, 129, 47, 0.6);
+  box-shadow: 0 0 8px rgba(255, 129, 47, 0.5);
+  transition: width 0.4s ease;
 }
 
 /* ===== 22a: Tekan lama dan petunjuk ===== */
@@ -300,4 +304,104 @@
 .nk-hist__time.is-empty {
   color: #7d8090;
   font-style: italic;
+}
+
+/* ===== Beranda: panel "Lanjutkan Menonton" ===== */
+/* Mengikuti sistem panel bento: lebar, radius, dan kaca yang sama. */
+.home-history {
+  width: var(--nk-width);
+  margin: 24px auto 0;
+}
+
+.home-history .nk-hist {
+  width: 100%;
+  margin: 0;
+  padding: 22px 22px 24px;
+  background: var(--nk-glass-bg);
+  border: 1px solid var(--nk-glass-border);
+  border-radius: var(--nk-radius);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 16px 40px rgba(0, 0, 0, 0.28);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+}
+
+.home-history .nk-hist__head {
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.home-history .nk-hist__head .eyebrow {
+  margin: 0 0 6px;
+  font-size: 0.64rem;
+  letter-spacing: 0.24em;
+}
+
+.home-history .nk-hist__head h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+  letter-spacing: -0.01em;
+}
+
+.nk-hist__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #ffb07a;
+  background: rgba(255, 129, 47, 0.12);
+  border: 1px solid rgba(255, 129, 47, 0.32);
+  border-radius: 999px;
+}
+
+.home-history .nk-hist__hint {
+  margin: 2px 0 16px;
+}
+
+/* Empat kolom di desktop supaya riwayat terbaca sekilas tanpa scroll. */
+.home-history .nk-hist__list {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1320px) {
+  .home-history .nk-hist__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .home-history .nk-hist__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .home-history {
+    margin-top: 18px;
+  }
+
+  .home-history .nk-hist {
+    padding: 18px 14px 20px;
+    border-radius: 20px;
+  }
+
+  .home-history .nk-hist__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (hover: none), (max-width: 700px), (prefers-reduced-transparency: reduce) {
+  .home-history .nk-hist {
+    background: rgba(12, 14, 24, 0.72);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }

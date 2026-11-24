@@ -1,7 +1,9 @@
 import express from "express";
 import cors from "cors";
+import { getStreams, listEpisodes } from "./streaming/index.js";
+import { listProviders } from "./streaming/registry.js";
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 const ANILIST_URL = "https://graphql.anilist.co";
 const CACHE_TTL_MS = 10 * 60 * 1000; // cache 10 menit
 const TIMEOUT_MS = 8000;
@@ -23,6 +25,7 @@ const MEDIA_FIELDS = `
   description(asHtml: false)
   countryOfOrigin
   coverImage { extraLarge large }
+  bannerImage
 `;
 
 // Mengubah format AniList menjadi format NEKONIME (sama dengan src/data/anime.js)
@@ -39,8 +42,12 @@ function normalize(item) {
     synopsis:
       (item.description || "").replace(/<[^>]*>/g, "").trim() ||
       "Sinopsis belum tersedia.",
-    totalEpisodes: item.episodes || 12,
+    // Jangan mengarang jumlah episode. null berarti belum diketahui.
+    totalEpisodes:
+      Number.isInteger(item.episodes) && item.episodes > 0 ? item.episodes : null,
     poster: item.coverImage?.extraLarge || item.coverImage?.large || "",
+    // Banner landscape opsional untuk hero beranda (field tambahan, tidak mengubah kontrak lama).
+    bannerImage: item.bannerImage || "",
     status: item.status || ""
   };
 }
@@ -66,17 +73,39 @@ async function fromAniList(cacheKey, query, variables) {
   return data;
 }
 
-const TOP_QUERY = `query ($page: Int) {
-  Page(page: $page, perPage: 12) {
-    media(type: ANIME, sort: POPULARITY_DESC, isAdult: false) { ${MEDIA_FIELDS} }
+// Bangun argumen media AniList berdasarkan filter yang diberikan pengguna.
+function buildMediaArgs(category, filters, isSearch) {
+  const args = ["type: ANIME"];
+  if (category === "anime") args.push("countryOfOrigin: JP");
+  if (category === "donghua") args.push("countryOfOrigin: CN");
+  args.push("isAdult: false");
+  if (filters.genre) args.push(`genre_in: ["${String(filters.genre).replace(/"/g, "")}"]`);
+  if (filters.year) {
+    const y = Number.parseInt(filters.year, 10);
+    if (Number.isInteger(y)) args.push(`seasonYear: ${y}`);
   }
-}`;
+  if (filters.status) args.push(`status: ${String(filters.status).toUpperCase()}`);
+  const sort = filters.sort === "latest" ? "START_DATE_DESC" : isSearch ? "SEARCH_MATCH" : "POPULARITY_DESC";
+  args.push(`sort: ${sort}`);
+  if (isSearch) args.push("search: $q");
+  return args.join(", ");
+}
 
-const SEARCH_QUERY = `query ($q: String, $page: Int) {
-  Page(page: $page, perPage: 12) {
-    media(type: ANIME, search: $q, sort: SEARCH_MATCH, isAdult: false) { ${MEDIA_FIELDS} }
-  }
-}`;
+function buildTopQuery(category, filters) {
+  return `query ($page: Int) {
+    Page(page: $page, perPage: 12) {
+      media(${buildMediaArgs(category, filters, false)}) { ${MEDIA_FIELDS} }
+    }
+  }`;
+}
+
+function buildSearchQuery(category, filters) {
+  return `query ($q: String, $page: Int) {
+    Page(page: $page, perPage: 12) {
+      media(${buildMediaArgs(category, filters, true)}) { ${MEDIA_FIELDS} }
+    }
+  }`;
+}
 
 // Kategori tab -> negara asal di AniList
 const COUNTRY = { anime: "JP", donghua: "CN" };
@@ -92,16 +121,33 @@ const withCountry = (query, category) =>
 
 const app = express();
 // Hanya izinkan aplikasi web di localhost (ubah saat deploy).
-app.use(cors({ origin: [/^http:\/\/localhost:\d+$/] }));
+app.use(cors({ origin: [/^https?:\/\/(localhost|127\.0\.0\.1):\d+$/] }));
 
 app.get("/api/health", (req, res) => {
   res.json({ ok: true, cached: cache.size });
 });
 
+// Baca parameter filter dari query string (genre, year, status, sort).
+function filtersOf(req) {
+  return {
+    genre: String(req.query.genre || "").trim(),
+    year: String(req.query.year || "").trim(),
+    status: String(req.query.status || "").trim(),
+    sort: String(req.query.sort || "").trim(),
+  };
+}
+
+function filterKey(filters) {
+  return `${filters.genre || "-"}:${filters.year || "-"}:${filters.status || "-"}:${filters.sort || "-"}`;
+}
+
 app.get("/api/top", async (req, res) => {
   try {
     const cat = categoryOf(req);
-    res.json({ data: await fromAniList(`top:${cat}:${pageOf(req)}`, withCountry(TOP_QUERY, cat), { page: pageOf(req) }) });
+    const filters = filtersOf(req);
+    const query = buildTopQuery(cat, filters);
+    const cacheKey = `top:${cat}:${pageOf(req)}:${filterKey(filters)}`;
+    res.json({ data: await fromAniList(cacheKey, query, { page: pageOf(req) }) });
   } catch (err) {
     res.status(502).json({ error: "Gagal menghubungi AniList", detail: err.message });
   }
@@ -112,7 +158,10 @@ app.get("/api/search", async (req, res) => {
   if (!q) return res.status(400).json({ error: "Parameter q wajib diisi" });
   try {
     const cat = categoryOf(req);
-    res.json({ data: await fromAniList(`search:${cat}:${pageOf(req)}:${q.toLowerCase()}`, withCountry(SEARCH_QUERY, cat), { q, page: pageOf(req) }) });
+    const filters = filtersOf(req);
+    const query = buildSearchQuery(cat, filters);
+    const cacheKey = `search:${cat}:${pageOf(req)}:${q.toLowerCase()}:${filterKey(filters)}`;
+    res.json({ data: await fromAniList(cacheKey, query, { q, page: pageOf(req) }) });
   } catch (err) {
     res.status(502).json({ error: "Gagal menghubungi AniList", detail: err.message });
   }
@@ -184,6 +233,75 @@ app.get("/api/suggest", async (req, res) => {
     res.json({ data: [], matched: q });
   } catch (err) {
     res.status(502).json({ error: "Gagal menghubungi AniList", detail: err.message });
+  }
+});
+
+// ============================================
+// STREAMING (provider legal saja)
+// ============================================
+
+// Daftar provider yang aktif beserta status lisensinya.
+app.get("/api/streams/providers", (req, res) => {
+  res.json({ data: listProviders() });
+});
+
+const isNumericId = (value) => /^\d+$/.test(value);
+const parseEpisode = (value) => {
+  if (!/^\d+$/.test(value)) return null;
+  const episode = Number(value);
+  return Number.isSafeInteger(episode) && episode > 0 ? episode : null;
+};
+
+// Episode yang punya sumber dari provider aktif.
+app.get("/api/episodes/:animeId", (req, res) => {
+  const { animeId } = req.params;
+  if (!isNumericId(animeId)) {
+    return res.status(400).json({ error: "ID anime tidak valid." });
+  }
+
+  const episodes = listEpisodes(animeId);
+  res.json({ data: { animeId, total: episodes.length, episodes } });
+});
+
+// Sumber tunggal, kompatibel dengan pemanggilan lama.
+app.get("/api/episodes/:animeId/:episode", async (req, res) => {
+  const { animeId, episode: rawEpisode } = req.params;
+  const episode = parseEpisode(rawEpisode);
+
+  if (!isNumericId(animeId) || episode === null) {
+    return res.status(400).json({ error: "ID anime atau nomor episode tidak valid." });
+  }
+
+  try {
+    const title = String(req.query.title || "").trim().slice(0, 200) || undefined;
+    const sources = await getStreams({ animeId, episode, title });
+    if (sources.length === 0) {
+      return res.status(404).json({ error: "Sumber video belum tersedia." });
+    }
+    res.json({ data: { animeId, episode, source: sources[0] } });
+  } catch (err) {
+    res.status(502).json({ error: "Gagal mengambil sumber video", detail: err.message });
+  }
+});
+
+// Semua sumber dari provider aktif.
+app.get("/api/episodes/:animeId/:episode/streams", async (req, res) => {
+  const { animeId, episode: rawEpisode } = req.params;
+  const episode = parseEpisode(rawEpisode);
+
+  if (!isNumericId(animeId) || episode === null) {
+    return res.status(400).json({ error: "ID anime atau nomor episode tidak valid." });
+  }
+
+  try {
+    const title = String(req.query.title || "").trim().slice(0, 200) || undefined;
+    const sources = await getStreams({ animeId, episode, title });
+    if (sources.length === 0) {
+      return res.status(404).json({ error: "Sumber video belum tersedia." });
+    }
+    res.json({ data: { animeId, episode, sources } });
+  } catch (err) {
+    res.status(502).json({ error: "Gagal mengambil sumber video", detail: err.message });
   }
 });
 

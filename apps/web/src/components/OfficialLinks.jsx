@@ -5,8 +5,7 @@ import "./OfficialLinks.css";
 const SERVICES = [
   { name: "JustWatch", hint: "cek ketersediaan", url: (q) => `https://www.justwatch.com/id/search?q=${q}` },
   { name: "Crunchyroll", url: (q) => `https://www.crunchyroll.com/search?q=${q}` },
-  { name: "Netflix", url: (q) => `https://www.netflix.com/search?q=${q}` },
-  { name: "YouTube", hint: "Ani-One / Muse", url: (q) => `https://www.youtube.com/results?search_query=${q}+Sub+Indo` }
+  { name: "Netflix", url: (q) => `https://www.netflix.com/search?q=${q}` }
 ];
 
 function OfficialLinks({ title }) {

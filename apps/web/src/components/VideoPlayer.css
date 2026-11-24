@@ -27,6 +27,36 @@
   margin: 0;
 }
 
+/* Pemilih server hanya tampil saat ada lebih dari satu sumber. */
+.video-meta .source-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #c9ccd8;
+}
+
+.video-meta .source-selector select {
+  max-width: 260px;
+  padding: 5px 10px;
+  font: inherit;
+  font-size: 0.8rem;
+  color: #eef0f7;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.video-meta .source-selector select:hover {
+  border-color: rgba(255, 129, 47, 0.55);
+}
+
+.video-meta .source-selector select:focus-visible {
+  outline: 2px solid #ff812f;
+  outline-offset: 3px;
+}
+
 .video-fallback-link,
 .video-fallback-link:visited {
   font-size: 0.85rem;
@@ -158,4 +188,78 @@ html.cinema-mode .video-stage .video-player {
   height: 100%;
   aspect-ratio: auto;
   border: 0;
+}
+
+/* Loading pemutar */
+.video-player__loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  color: #eef0f7;
+  background: rgba(8, 10, 18, 0.55);
+  z-index: 2;
+}
+
+.video-player__spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #ff812f;
+  border-radius: 50%;
+  animation: video-spin 0.9s linear infinite;
+}
+
+@keyframes video-spin {
+  to { transform: rotate(360deg); }
+}
+
+.video-player__error {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  padding: 16px;
+  text-align: center;
+  color: #eef0f7;
+  background: rgba(8, 10, 18, 0.7);
+  z-index: 2;
+}
+
+.video-player__error button,
+.video-player__retry {
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 129, 47, 0.9);
+  color: #090b12;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* Indikator progress episode */
+.episode-progress {
+  display: inline-block;
+  width: 40px;
+  height: 4px;
+  margin-left: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.episode-progress span {
+  display: block;
+  height: 100%;
+  background: #ff812f;
+  border-radius: 999px;
+}
+
+.episode-done {
+  margin-left: 6px;
+  color: #ff812f;
+  font-weight: 700;
 }
