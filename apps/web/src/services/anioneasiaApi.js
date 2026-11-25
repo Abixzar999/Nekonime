@@ -28,20 +28,51 @@ export const fetchAnioneasiaVideo = (videoId, signal) =>
 export const fetchAnioneasiaStats = (signal) =>
   getData("/anioneasia/stats", signal);
 
+// Fetch episodes from backend (uses AniOneAsia streaming provider with proper title matching)
+export const fetchAnioneasiaEpisodes = (animeId, title, signal) =>
+  getData(`/episodes/${animeId}?title=${encodeURIComponent(title)}`, signal);
+
 // Helper: parse judul video AniOneAsia untuk ekstrak nama anime + episode
-// Contoh: "Spy x Family Episode 5 Sub Indo" -> { title: "Spy x Family", episode: 5 }
+// Format AniOneAsia: "《Series Title》#47 (ENG sub | JP dub) 【Ani-One Asia】"
+// Juga handle format generik: "Spy x Family Episode 5 Sub Indo" -> { title: "Spy x Family", episode: 5 }
 export function parseAnioneasiaTitle(rawTitle) {
   if (!rawTitle) return { title: rawTitle, episode: null };
 
-  // Pattern umum: "Anime Title Episode XX" atau "Anime Title - Episode XX" atau "Anime Title Ep XX"
-  const patterns = [
+  // 1. Ekstrak series title dari bracket 《》 (format AniOneAsia)
+  const bracketMatch = rawTitle.match(/《([^》]+)》/);
+  let seriesTitle = bracketMatch ? bracketMatch[1].trim() : null;
+
+  // 2. Pattern episode untuk format AniOneAsia: #47, #＃47, dll
+  const anioneasiaPatterns = [
+    /[#＃]\s*(\d+)/,                    // 《Title》#47 or #＃47
+    /(?:episode|ep\.?|eps\.?)\s*(\d+)/i,
+    /[-–—]\s*episode\s*(\d+)/i,
+    /\s+(\d+)\s*(?:sub|dub|indo|english)/i,
+    /\s+(\d+)$/,
+  ];
+
+  for (const pattern of anioneasiaPatterns) {
+    const match = rawTitle.match(pattern);
+    if (match) {
+      const num = Number.parseInt(match[1], 10);
+      if (num > 0 && num < 1000) {
+        return {
+          title: seriesTitle || rawTitle,
+          episode: num,
+        };
+      }
+    }
+  }
+
+  // 3. Fallback generik untuk format lain
+  const genericPatterns = [
     /^(.+?)\s+(?:episode|ep\.?|eps\.?)\s*(\d+)/i,
     /^(.+?)\s*[-–—]\s*episode\s*(\d+)/i,
     /^(.+?)\s+(\d+)\s*(?:sub|dub|indo|english)/i,
     /^(.+?)\s+(\d+)$/, // "Title 5"
   ];
 
-  for (const pattern of patterns) {
+  for (const pattern of genericPatterns) {
     const match = rawTitle.match(pattern);
     if (match) {
       return {
@@ -51,17 +82,17 @@ export function parseAnioneasiaTitle(rawTitle) {
     }
   }
 
-  // Fallback: cari angka di akhir
+  // 4. Fallback: cari angka di akhir
   const trailingNum = rawTitle.match(/(\d+)\s*$/);
   if (trailingNum) {
     const num = Number.parseInt(trailingNum[1], 10);
     if (num > 0 && num < 1000) {
       return {
-        title: rawTitle.slice(0, trailingNum.index).trim(),
+        title: seriesTitle || rawTitle.slice(0, trailingNum.index).trim(),
         episode: num,
       };
     }
   }
 
-  return { title: rawTitle, episode: null };
+  return { title: seriesTitle || rawTitle, episode: null };
 }

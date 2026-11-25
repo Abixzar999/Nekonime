@@ -3,7 +3,7 @@ import { checkAnioneasiaAvailability, getAnioneasiaEpisodesForAnime } from "../u
 import Icon from "./Icon";
 import "./AnioneasiaBadge.css";
 
-export function AnioneasiaBadge({ animeTitle, animeId }) {
+export function AnioneasiaBadge({ animeTitle, animeId, onWatch }) {
   const [available, setAvailable] = useState(false);
   const [loading, setLoading] = useState(true);
   const [episodes, setEpisodes] = useState([]);
@@ -30,6 +30,11 @@ export function AnioneasiaBadge({ animeTitle, animeId }) {
     setShowEpisodes(true);
   };
 
+  const handleWatchEpisode = (episode) => {
+    setShowEpisodes(false);
+    if (onWatch) onWatch(episode);
+  };
+
   if (loading || !available) return null;
 
   return (
@@ -48,18 +53,17 @@ export function AnioneasiaBadge({ animeTitle, animeId }) {
       {showEpisodes && episodes.length > 0 && (
         <div className="anioneasia-badge__episodes" role="list" aria-label={`Episode ${animeTitle} di AniOneAsia`}>
           {episodes.slice(0, 20).map((ep) => (
-            <a
+            <button
               key={ep.videoId}
-              href={`https://www.youtube.com/watch?v=${ep.videoId}`}
-              target="_blank"
-              rel="noopener noreferrer"
+              type="button"
               className="anioneasia-badge__ep"
               role="listitem"
+              onClick={() => handleWatchEpisode(ep.parsedEpisode)}
             >
               <span className="anioneasia-badge__ep-num">Ep {ep.parsedEpisode}</span>
               <span className="anioneasia-badge__ep-title">{ep.parsedTitle}</span>
-              <Icon name="external" size={12} />
-            </a>
+              <Icon name="play" size={12} />
+            </button>
           ))}
           {episodes.length > 20 && (
             <a
@@ -78,6 +82,6 @@ export function AnioneasiaBadge({ animeTitle, animeId }) {
   );
 }
 
-export default function AnioneasiaBadgeWrapper({ animeTitle, animeId }) {
-  return <AnioneasiaBadge animeTitle={animeTitle} animeId={animeId} />;
+export default function AnioneasiaBadgeWrapper({ animeTitle, animeId, onWatch }) {
+  return <AnioneasiaBadge animeTitle={animeTitle} animeId={animeId} onWatch={onWatch} />;
 }

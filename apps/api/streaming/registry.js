@@ -1,9 +1,10 @@
 import localYouTube from "./providers/localYouTube.js";
 import anioneasia from "./providers/anioneasia.js";
+import museindo from "./providers/museindo.js";
 
 // Semua provider yang dikenal aplikasi. Provider yang legalitasnya belum
 // terverifikasi tidak boleh didaftarkan di sini.
-const ALL_PROVIDERS = [localYouTube, anioneasia];
+const ALL_PROVIDERS = [localYouTube, anioneasia, museindo];
 
 // Gate tunggal: provider hanya aktif jika diaktifkan DAN lisensinya terverifikasi.
 export function getActiveProviders() {

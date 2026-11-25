@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Icon from "./Icon";
 import { AnioneasiaBadge } from "./AnioneasiaBadge";
+import { MuseindoBadge } from "./MuseindoBadge";
 
 const STATUS_LABELS = {
   FINISHED: "Tamat",
@@ -11,7 +12,7 @@ const STATUS_LABELS = {
 };
 
 // Label info (rating, tahun, episode, status), label genre, dan sinopsis yang bisa dipanjangkan.
-function AnimeFacts({ anime }) {
+function AnimeFacts({ anime, onWatchEpisode }) {
   const [expanded, setExpanded] = useState(false);
 
   const genres = anime.genre && anime.genre !== "-" ? anime.genre.split(" · ") : [];
@@ -60,7 +61,10 @@ function AnimeFacts({ anime }) {
       )}
 
       {/* Badge AniOneAsia - muncul jika anime ini punya video di channel */}
-      <AnioneasiaBadge animeTitle={anime.title} animeId={anime.id} />
+      <AnioneasiaBadge animeTitle={anime.title} animeId={anime.id} onWatch={onWatchEpisode} />
+      
+      {/* Badge Muse Indonesia - muncul jika anime ini punya video Sub Indo di channel */}
+      <MuseindoBadge animeTitle={anime.title} animeId={anime.id} onWatch={onWatchEpisode} />
     </div>
   );
 }

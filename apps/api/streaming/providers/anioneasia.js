@@ -28,7 +28,7 @@ function extractSeriesTitle(videoTitle) {
 
 // Normalize a title for comparison
 function normalizeForCompare(title) {
-  return title.toLowerCase().replace(/[^a-z0-9\s]/g, " ").trim();
+  return title.toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
 }
 
 // Check if video title matches the anime title precisely

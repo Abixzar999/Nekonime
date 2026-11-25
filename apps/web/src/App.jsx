@@ -150,7 +150,9 @@ function App() {
       ? []
       : remoteStreams.key === streamKey
         ? remoteStreams.sources
-        : fallbackStreams;
+        : fallbackStreams.length > 0
+          ? fallbackStreams
+          : remoteStreams.sources; // Allow backend sources even when local fallback is empty
 
   useEffect(() => {
     if (!isWatching || !selectedAnimeData?.id) return undefined;
@@ -641,7 +643,7 @@ function App() {
             isAvailable={(id) => Boolean(findAnime(id))}
             onSelect={changeSeason}
           />
-              <AnimeFacts key={selectedAnimeData.id} anime={selectedAnimeData} />
+              <AnimeFacts key={selectedAnimeData.id} anime={selectedAnimeData} onWatchEpisode={(ep) => watchEpisode(selectedAnimeData, ep)} />
               <OfficialLinks title={selectedAnimeData.title} />
               <button
                 type="button"

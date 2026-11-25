@@ -3,6 +3,7 @@ import cors from "cors";
 import { getStreams, listEpisodes } from "./streaming/index.js";
 import { listProviders } from "./streaming/registry.js";
 import { listAnioneasiaVideos, getAnioneasiaVideo, getAnioneasiaStats } from "./anioneasia.js";
+import { listMuseindoVideos, getMuseindoVideo, getMuseindoStats } from "./museindo.js";
 
 const PORT = process.env.PORT || 3002;
 const ANILIST_URL = "https://graphql.anilist.co";
@@ -121,8 +122,9 @@ const withCountry = (query, category) =>
     : query;
 
 const app = express();
-// Hanya izinkan aplikasi web di localhost (ubah saat deploy).
-app.use(cors({ origin: [/^https?:\/\/(localhost|127\.0\.0\.1):\d+$/] }));
+// Izinkan semua origin untuk development (localhost, LAN, Docker, etc.)
+// Di production, ganti dengan domain spesifik
+app.use(cors({ origin: true }));
 
 app.get("/api/health", (req, res) => {
   res.json({ ok: true, cached: cache.size });
@@ -346,6 +348,52 @@ app.get("/api/anioneasia/videos/:videoId", (req, res) => {
 app.get("/api/anioneasia/stats", (req, res) => {
   try {
     const result = getAnioneasiaStats();
+    if (result.error) return res.status(503).json({ error: result.error });
+    res.json({ data: result });
+  } catch (err) {
+    res.status(500).json({ error: "Gagal mengambil statistik", detail: err.message });
+  }
+});
+
+// ============================================
+// MUSE INDONESIA (Channel YouTube metadata)
+// ============================================
+
+// List video dengan filter: q, page, limit, dateFrom, dateTo, minViews
+app.get("/api/museindo/videos", (req, res) => {
+  try {
+    const { q = "", page = 1, limit = 20, dateFrom, dateTo, minViews = 0 } = req.query;
+    const result = listMuseindoVideos({
+      q: String(q).trim(),
+      page: Math.max(1, Number.parseInt(page, 10) || 1),
+      limit: Math.min(100, Math.max(1, Number.parseInt(limit, 10) || 20)),
+      dateFrom: dateFrom || undefined,
+      dateTo: dateTo || undefined,
+      minViews: Math.max(0, Number.parseInt(minViews, 10) || 0),
+    });
+    if (result.error) return res.status(503).json({ error: result.error });
+    res.json({ data: result.data, pagination: { page: result.page, limit: result.limit, total: result.total, totalPages: result.totalPages } });
+  } catch (err) {
+    res.status(500).json({ error: "Gagal mengambil data Muse Indonesia", detail: err.message });
+  }
+});
+
+// Detail satu video
+app.get("/api/museindo/videos/:videoId", (req, res) => {
+  try {
+    const { videoId } = req.params;
+    const result = getMuseindoVideo(videoId);
+    if (result.error) return res.status(result.error === "Not found" ? 404 : 503).json({ error: result.error });
+    res.json({ data: result.data });
+  } catch (err) {
+    res.status(500).json({ error: "Gagal mengambil detail video", detail: err.message });
+  }
+});
+
+// Statistik channel
+app.get("/api/museindo/stats", (req, res) => {
+  try {
+    const result = getMuseindoStats();
     if (result.error) return res.status(503).json({ error: result.error });
     res.json({ data: result });
   } catch (err) {
